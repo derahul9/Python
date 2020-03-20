@@ -1,0 +1,81 @@
+Git hub is SaaS app that is very popular on hosting online GIT repository. (Git hub uses GIT under the hood). 
+
+mkdir git-test
+cd git-test/
+git init
+ls -al ——> .git (Repository - Set of information stored under .git sub directory - project folder for set of related files)
+
+git status —> will give you all  untracked files created under .git  (test1.py and test2.py) 
+
+On branch master, there will be no commits yet
+
+git add test*.py (After this command it will show as changes to be committed) (after git add status will change from untracked to staging.
+
+git commit -m “Making first commit of files”  (-m is for comments)  —> This will give warning that below fields need to be filled
+
+git config —global user.email
+git config —global user.name ——> Only have to set this up once
+
+cat ~/.gitconfig —> this file will store the email and username details
+
+After above is done then you can do git commit
+
+git status —> On branch master and nothing to commit
+
+git branch —> will show the branches that we have
+
+To clone github to your pc do —> git clone url
+
+GIT Flow —
+————————
+Working Directory —> (Use git add/rm) to stage or go to staging stage —> (use git commit) to add it to the repository (.git)
+
+Now if you edit test2.py and create a new one test3.py and do git status —> test2.py will show under untracked files and test3.py will show under modified.
+
+git diff gives you the config that is differing from the old one
+
+git log —> will show us history of commits
+
+4 - Push and Pull-
+———————————
+
+git clone url (typing this command in your commandprompt of pc will clone everything on github to your pc)
+
+now create a file and push it to github using —> git push origin master (origin - when we initially did the clone request, the url of github became the origin), so origin is the remote machine.
+
+git remote -v (Will give you all the remotes you have)
+
+git pull origin master (you can pull from master branch)
+
+5 - GIT branches- (The working directory is further divided into branches)
+———————————
+
+if a file is not added to repo then do rm to remove the file. If its already in stging area then do git reset head file name and then do rm to remove it
+
+to discard a change made on a file do —> git checkout — ./test2.py
+
+to discard a change made on multiple file do —> git stash
+
+git checkout -b devel master (checkout a developer branch which is based on master branch)
+
+git branch feature1 (creates feature1 branch, git checkout will go into the branch)
+
+git push origin develop (This will create a new branch on github called develop). The files on develop (except for one) and master will be same as they are different views of same files
+
+Now if you want to merge the changes made in develop branch into the master branch, then click on merge request in github. 
+Whenever that request is accepted then the changes in develop branch will be merged into master branch. 
+Now this can be pulled into your machine using git pull origin master.
+
+Rebase-
+——————
+In Github, you can fork nornir into nornir which is basically making a copy. 
+Later you make commits and changes to the original one, the updates might not be in the copy. 
+You can do git rebase to update the copy with all the updates.
+
+git fetch origin ( give me all the things that change in the origin) then go to the branch (2.0) that you want to update and  —>
+git rebase origin/2.0
+
+Useful links -
+https://github.github.com/training-kit/downloads/github-git-cheat-sheet/
+https://tutorialzine.com/2016/06/learn-git-in-30-minutes?__s=fem5hxy3xmx66jfao5wv
+https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/resolving-a-merge-conflict-using-the-command-line
