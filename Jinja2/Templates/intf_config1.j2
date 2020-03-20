@@ -1,0 +1,12 @@
+interface gig 0/0
+ {%- if mode == "access" %}
+ switchport access vlan 400
+ switchport mode access
+ {%- elif mode == "trunk" %}
+ switchport trunk native vlan 1
+ switchport mode trunk
+ {%- else %}
+ description test
+ {% endif %}
+
+#If we use this template without - then the rendered output will show unnecessary space. If we want to strip it then we use the - symbol after or before % as required
