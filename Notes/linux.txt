@@ -1,0 +1,17 @@
+Creating tap interface on Ubuntu -
+------------------------------------
+In etc/network/interfaces, configure -
+
+allow-hotplug tap1
+auto tap1
+iface tap1 inet manual 
+    pre-up ip tuntap add tap1 mode tap user rahul
+    pre-up ip addr add 192.168.1.1/24 dev tap1
+    up ip link set dev tap1 up
+    post-up ip route add 192.168.1.0/24 dev tap1 
+    post-down ip link del dev tap1
+
+Important Links -
+--------------------
+https://docs.gns3.com/1QXVIihk7dsOL7Xr7Bmz4zRzTsJ02wklfImGuHwTlaA4/index.html
+http://manpages.ubuntu.com/manpages/bionic/man8/tunctl.8.html
