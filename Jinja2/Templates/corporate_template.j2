@@ -1,0 +1,189 @@
+{{Change_Number}}: Upgrade procedure for {{Router_A}}
+
+!!!NOTE: For LAC changes the change window is 3 hours from start time for install and backout. Additional 2 hour buffer is for engineer to close change.
+!!!NOTE: At any point, If you lose access to Router or Post-Checks fail. Stop the change and have a decision made by team lead or management.
+!!!NOTE: VOCC and GNOC invited for this call. If they are not on the bridge inform them to join and stay on the call. Proceed with change only if they are on the call.
+
+***It is critical that BGP, OSPF, Tunnels are up on both routers, before proceeding with software upgrade. As we need both routers in healthy state.
+***at any time if ping to EA IP is not working clear the ARP entry after informing on bridge.
+
+{{Diagram}}
+Console: {{Console}}
+
+{{Router_A}} and {{Router_B}}
+
+================
+Step 0. PRE CHECKS
+================
+
+term len 0
+show clock
+show runn
+dir | i c1900-universalk9-mz.SPA.157-3.M5.bin
+dir | i c2900-universalk9-mz.SPA.157-3.M5.bin
+dir | i c3900-universalk9-mz.SPA.157-3.M5.bin
+show version | i IOS
+show version | i file
+show vlan-switch
+show spanning-tree summary
+show crypto isakmp sa
+show crypto session int
+show ip route
+show ip route summary
+show ip route ospf
+show ip ospf neighbor
+show runn | sec ospf
+show ip bgp summary ***prefixes learned should match pre and post checks
+show ip eigrp neighbor
+show ip eigrp topology
+show standby brief
+show ip interface brief
+show bfd neighbor
+show interface status
+show cdp neighbor
+show clock
+
+
+=========================
+Step 1 {{Router_A}} Upgrade
+=========================
+
+config t
+config-register 0x2102
+no boot system
+boot system flash {{New_Image}} ***new image based on hardware version
+boot system flash {{Old_Image}} ***current Image as secondary
+end
+wr mem
+!
+show ver | i register to verify 0x2102
+show run | i boot to verify boot statement
+!
+reload
+
+=================
+Step 2 POST CHECKS
+=================
+
+term len 0
+show clock
+show runn
+dir | i c1900-universalk9-mz.SPA.157-3.M5.bin
+dir | i c2900-universalk9-mz.SPA.157-3.M5.bin
+dir | i c3900-universalk9-mz.SPA.157-3.M5.bin
+show version | i IOS
+show version | i file
+show vlan-switch
+show spanning-tree summary
+show crypto isakmp sa
+show crypto session int
+show ip route
+show ip route summary
+show ip route ospf
+show ip ospf neighbor
+show runn | sec ospf
+show ip bgp summary ***prefixes learned should match pre and post checks
+show ip eigrp neighbor
+show ip eigrp topology
+show standby brief
+show ip interface brief
+show bfd neighbor
+show interface status
+show cdp neighbor
+show clock
+
+
+
+
+
+
+@@@BACKOUT SCRIPT@@@
+
+
+***It is critical that BGP, OSPF, Tunnels are up on both routers, before proceeding with software upgrade. As we need both routers in healthy state.
+***at any time if ping to EA IP is not working clear the ARP entry after informing on bridge.
+
+{{Router_A}} and {{Router_B}}
+
+================
+Step 0. PRE CHECKS
+================
+
+term len 0
+show clock
+show runn
+dir | i c1900-universalk9-mz.SPA.157-3.M5.bin
+dir | i c2900-universalk9-mz.SPA.157-3.M5.bin
+dir | i c3900-universalk9-mz.SPA.157-3.M5.bin
+show version | i IOS
+show version | i file
+show vlan-switch
+show spanning-tree summary
+show crypto isakmp sa
+show crypto session int
+show ip route
+show ip route summary
+show ip route ospf
+show ip ospf neighbor
+show runn | sec ospf
+show ip bgp summary
+show ip eigrp neighbor
+show ip eigrp topology
+show standby brief
+show ip interface brief
+show bfd neighbor
+show interface status
+show cdp neighbor
+show clock
+
+=========================
+Step 1 {{Router_A}} Downgrade
+=========================
+
+config t
+config-register 0x2102
+no boot system
+boot system flash {{Old_Image}} ***current Image
+boot system flash {{New_Image}} ***new image based on hardware version
+end
+wr mem
+!
+show ver | i register to verify 0x2102
+show run | i boot to verify boot statement
+!
+reload
+
+=================
+Step 2 POST CHECKS
+=================
+
+term len 0
+show clock
+show runn
+dir | i c1900-universalk9-mz.SPA.157-3.M5.bin
+dir | i c2900-universalk9-mz.SPA.157-3.M5.bin
+dir | i c3900-universalk9-mz.SPA.157-3.M5.bin
+show version | i IOS
+show version | i file
+show vlan-switch
+show spanning-tree summary
+show crypto isakmp sa
+show crypto session int
+show ip route
+show ip route summary
+show ip route ospf
+show ip ospf neighbor
+show runn | sec ospf
+show ip bgp summary
+show ip eigrp neighbor
+show ip eigrp topology
+show standby brief
+show ip interface brief
+show bfd neighbor
+show interface status
+show cdp neighbor
+show clock
+
+
+
+*************************************************************************************************************
