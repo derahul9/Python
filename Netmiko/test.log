@@ -1,0 +1,214 @@
+DEBUG:paramiko.transport:starting thread (client mode): 0x62990b70
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.1
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-Cisco-1.25
+INFO:paramiko.transport:Connected (version 2.0, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96', 'hmac-md5', 'hmac-md5-96'] server mac:['hmac-sha1', 'hmac-sha1-96', 'hmac-md5', 'hmac-md5-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group1-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-cbc
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:kex engine KexGroup1 specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 192.168.1.2: b'7f6d98f7a6b3040b628e2ea00ba5f5dd'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:netmiko:read_channel: 
+R1#
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:write_channel: b'\n'
+DEBUG:netmiko:read_channel: 
+R1#
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:[find_prompt()]: prompt is R1#
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:In disable_paging
+DEBUG:netmiko:Command: terminal length 0
+
+DEBUG:netmiko:write_channel: b'terminal length 0\n'
+DEBUG:netmiko:Pattern is: terminal\ length\ 0
+DEBUG:netmiko:_read_channel_expect read_data: t
+DEBUG:netmiko:_read_channel_expect read_data: erminal l
+DEBUG:netmiko:_read_channel_expect read_data: ength 0
+R1#
+DEBUG:netmiko:Pattern found: terminal\ length\ 0 terminal length 0
+R1#
+DEBUG:netmiko:terminal length 0
+R1#
+DEBUG:netmiko:Exiting disable_paging
+DEBUG:netmiko:write_channel: b'terminal width 511\n'
+DEBUG:netmiko:Pattern is: terminal\ width\ 511
+DEBUG:netmiko:_read_channel_expect read_data: t
+DEBUG:netmiko:_read_channel_expect read_data: erminal w
+DEBUG:netmiko:_read_channel_expect read_data: idth 511
+R1#
+DEBUG:netmiko:Pattern found: terminal\ width\ 511 terminal width 511
+R1#
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:write_channel: b'show ip int br\n'
+DEBUG:netmiko:Pattern is: show\ ip\ int\ br
+DEBUG:netmiko:_read_channel_expect read_data: s
+DEBUG:netmiko:_read_channel_expect read_data: how ip in
+DEBUG:netmiko:_read_channel_expect read_data: t br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            192.168.1.2     YES NVRAM  up                    up      
+FastEthernet0/1            10.0.0.1        YES NVRAM  up                    up      
+FastEthernet1/0            unassigned      YES unset  up                    down    
+FastEthernet1/1            unassigned      YES unset  up                    down    
+FastEthernet1/2            unassigned      YES unset  up                    down    
+FastEthernet1/3            unassigned      YES unset  up                    down    
+FastEthernet1/4            unassigned      YES unset  up                    down    
+FastEthernet1/5            unassigned      YES unset  up                    down    
+FastEthernet1/6            unassigned      YES unset  up                    down    
+FastEthernet1/7            unassigned      YES unset  up                    down    
+FastEthernet1/8            unassigned      YES unset  up                    down    
+FastEthernet1/9            unassigned      YES unset  up                    down    
+FastEthernet1/10           unassigned      YES unset  up                    down    
+FastEthernet1/11           unassigned      YES unset  up                    down    
+FastEthernet1/12           unassigned      YES unset  up                    down    
+FastEthernet1/13           unassigned      YES unset  up                    down    
+FastEthernet1/14           unassigned      YES unset  up                    down    
+FastEthernet1/15           unassigned      YES unset  up                    down    
+Vlan1                      unassigned      YES NVRAM  up                    down    
+Loopback0                  30.0.0.1        YES NVRAM  up                    up      
+Loopback1                  20.0.0.1        YES NVRAM  up                    up      
+R1#
+DEBUG:netmiko:Pattern found: show\ ip\ int\ br show ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            192.168.1.2     YES NVRAM  up                    up      
+FastEthernet0/1            10.0.0.1        YES NVRAM  up                    up      
+FastEthernet1/0            unassigned      YES unset  up                    down    
+FastEthernet1/1            unassigned      YES unset  up                    down    
+FastEthernet1/2            unassigned      YES unset  up                    down    
+FastEthernet1/3            unassigned      YES unset  up                    down    
+FastEthernet1/4            unassigned      YES unset  up                    down    
+FastEthernet1/5            unassigned      YES unset  up                    down    
+FastEthernet1/6            unassigned      YES unset  up                    down    
+FastEthernet1/7            unassigned      YES unset  up                    down    
+FastEthernet1/8            unassigned      YES unset  up                    down    
+FastEthernet1/9            unassigned      YES unset  up                    down    
+FastEthernet1/10           unassigned      YES unset  up                    down    
+FastEthernet1/11           unassigned      YES unset  up                    down    
+FastEthernet1/12           unassigned      YES unset  up                    down    
+FastEthernet1/13           unassigned      YES unset  up                    down    
+FastEthernet1/14           unassigned      YES unset  up                    down    
+FastEthernet1/15           unassigned      YES unset  up                    down    
+Vlan1                      unassigned      YES NVRAM  up                    down    
+Loopback0                  30.0.0.1        YES NVRAM  up                    up      
+Loopback1                  20.0.0.1        YES NVRAM  up                    up      
+R1#
+DEBUG:paramiko.transport:starting thread (client mode): 0x621471d0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.1
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-Cisco-1.25
+INFO:paramiko.transport:Connected (version 2.0, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96', 'hmac-md5', 'hmac-md5-96'] server mac:['hmac-sha1', 'hmac-sha1-96', 'hmac-md5', 'hmac-md5-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group1-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-cbc
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:kex engine KexGroup1 specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 192.168.1.3: b'd3c304cd81d3b573dc514ea8e625daf5'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:netmiko:read_channel: 
+R2#
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:write_channel: b'\n'
+DEBUG:netmiko:read_channel: 
+R2#
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:[find_prompt()]: prompt is R2#
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:In disable_paging
+DEBUG:netmiko:Command: terminal length 0
+
+DEBUG:netmiko:write_channel: b'terminal length 0\n'
+DEBUG:netmiko:Pattern is: terminal\ length\ 0
+DEBUG:netmiko:_read_channel_expect read_data: t
+DEBUG:netmiko:_read_channel_expect read_data: erminal l
+DEBUG:netmiko:_read_channel_expect read_data: ength 0
+R2#
+DEBUG:netmiko:Pattern found: terminal\ length\ 0 terminal length 0
+R2#
+DEBUG:netmiko:terminal length 0
+R2#
+DEBUG:netmiko:Exiting disable_paging
+DEBUG:netmiko:write_channel: b'terminal width 511\n'
+DEBUG:netmiko:Pattern is: terminal\ width\ 511
+DEBUG:netmiko:_read_channel_expect read_data: t
+DEBUG:netmiko:_read_channel_expect read_data: erminal w
+DEBUG:netmiko:_read_channel_expect read_data: idth 511
+R2#
+DEBUG:netmiko:Pattern found: terminal\ width\ 511 terminal width 511
+R2#
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:read_channel: 
+DEBUG:netmiko:write_channel: b'show ip int br\n'
+DEBUG:netmiko:Pattern is: show\ ip\ int\ br
+DEBUG:netmiko:_read_channel_expect read_data: s
+DEBUG:netmiko:_read_channel_expect read_data: how ip in
+DEBUG:netmiko:_read_channel_expect read_data: t br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            192.168.1.3     YES NVRAM  up                    up      
+FastEthernet0/1            10.0.0.2        YES NVRAM  up                    up      
+FastEthernet1/0            unassigned      YES unset  up                    down    
+FastEthernet1/1            unassigned      YES unset  up                    down    
+FastEthernet1/2            unassigned      YES unset  up                    down    
+FastEthernet1/3            unassigned      YES unset  up                    down    
+FastEthernet1/4            unassigned      YES unset  up                    down    
+FastEthernet1/5            unassigned      YES unset  up                    down    
+FastEthernet1/6            unassigned      YES unset  up                    down    
+FastEthernet1/7            unassigned      YES unset  up                    down    
+FastEthernet1/8            unassigned      YES unset  up                    down    
+FastEthernet1/9            unassigned      YES unset  up                    down    
+FastEthernet1/10           unassigned      YES unset  up                    down    
+FastEthernet1/11           unassigned      YES unset  up                    down    
+FastEthernet1/12           unassigned      YES unset  up                    down    
+FastEthernet1/13           unassigned      YES unset  up                    down    
+FastEthernet1/14           unassigned      YES unset  up                    down    
+FastEthernet1/15           unassigned      YES unset  up                    down    
+Vlan1                      unassigned      YES NVRAM  up                    down    
+Loopback0                  30.0.0.2        YES NVRAM  up                    up      
+Loopback1                  20.0.0.2        YES NVRAM  up                    up      
+R2#
+DEBUG:netmiko:Pattern found: show\ ip\ int\ br show ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            192.168.1.3     YES NVRAM  up                    up      
+FastEthernet0/1            10.0.0.2        YES NVRAM  up                    up      
+FastEthernet1/0            unassigned      YES unset  up                    down    
+FastEthernet1/1            unassigned      YES unset  up                    down    
+FastEthernet1/2            unassigned      YES unset  up                    down    
+FastEthernet1/3            unassigned      YES unset  up                    down    
+FastEthernet1/4            unassigned      YES unset  up                    down    
+FastEthernet1/5            unassigned      YES unset  up                    down    
+FastEthernet1/6            unassigned      YES unset  up                    down    
+FastEthernet1/7            unassigned      YES unset  up                    down    
+FastEthernet1/8            unassigned      YES unset  up                    down    
+FastEthernet1/9            unassigned      YES unset  up                    down    
+FastEthernet1/10           unassigned      YES unset  up                    down    
+FastEthernet1/11           unassigned      YES unset  up                    down    
+FastEthernet1/12           unassigned      YES unset  up                    down    
+FastEthernet1/13           unassigned      YES unset  up                    down    
+FastEthernet1/14           unassigned      YES unset  up                    down    
+FastEthernet1/15           unassigned      YES unset  up                    down    
+Vlan1                      unassigned      YES NVRAM  up                    down    
+Loopback0                  30.0.0.2        YES NVRAM  up                    up      
+Loopback1                  20.0.0.2        YES NVRAM  up                    up      
+R2#
