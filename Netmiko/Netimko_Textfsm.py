@@ -8,14 +8,18 @@ import os
 
 os.environ["NET_TEXTFSM"] = "/home/ntc-templates/templates" #This variable needs to be setup , so that the templates could be found
 
-cisco = {
-    "host": "192.168.1.2",
-    "username": "cisco",
-    "password": "cisco",
-    "device_type": "cisco_ios",
-}
+ccccccccccccccccc
 
 net_connect = ConnectHandler(**cisco)
 output = net_connect.send_command("show ip arp", use_textfsm=True)
-print (output[0])
-print (output[3].keys())
+#print (output)
+#print (output[3].keys())
+#print (output[3]['address'])
+
+#print (len(output))
+#print (type(output))
+
+print ("IP_Address     MAC_address" )
+for element in output:
+    print (element['address'] ,":", element['mac'])
+#   break

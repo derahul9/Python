@@ -22,6 +22,6 @@ cisco1 = {
 }
 for device in (cisco, cisco1):
     net_connect = ConnectHandler(**device)
-    output = net_connect.send_command("show ip int br", expect_string=r'#')
+    output = net_connect.send_command("show ip int br", expect_string=r'#') #This is the message you should get on the last line #
     print (output)
 
