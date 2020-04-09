@@ -10,7 +10,7 @@ cisco = {
 
 net_connect = ConnectHandler(**cisco)
 print(net_connect.find_prompt())
-output = net_connect.send_command("show ip arp")
+output = net_connect.send_command("show ip bgp summ")
 print (output)
 net_connect.disconnect()
 

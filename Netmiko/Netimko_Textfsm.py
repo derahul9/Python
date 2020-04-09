@@ -4,11 +4,10 @@
 # If you need a data structure use Textfsm. Only Netmiko 2.1 and above supports TextFSM.
 
 from netmiko import ConnectHandler
+from inventory import cisco,cisco1
 import os
 
 os.environ["NET_TEXTFSM"] = "/home/ntc-templates/templates" #This variable needs to be setup , so that the templates could be found
-
-ccccccccccccccccc
 
 net_connect = ConnectHandler(**cisco)
 output = net_connect.send_command("show ip arp", use_textfsm=True)
