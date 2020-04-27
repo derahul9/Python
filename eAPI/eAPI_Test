@@ -1,0 +1,19 @@
+# The following config needs to be on the device to enable eAPI -
+# management api http-commands
+# no shut
+# If you get kvm permission denied error when running Arista eos then run sudi chown /dev/kvm or sudo chmod 777 /dev/kvm
+import pyeapi
+
+connection = pyeapi.client.connect(
+    transport="https",
+    host="192.168.1.2",
+    username="arista",
+    password="arista",
+    port="443",
+)
+
+# enable = getpass("Enable: ")
+# device = pyeapi.client.Node(connection, enablepwd=enable)
+device = pyeapi.client.Node(connection)
+output = device.enable(["show version", "show ip arp"])
+print(output)
