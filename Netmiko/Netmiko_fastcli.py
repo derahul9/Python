@@ -1,11 +1,11 @@
 from netmiko import ConnectHandler
 
 cisco = {
-    "host": "192.168.1.2",
+    "host": "192.168.1.3",
     "username": "cisco",
     "password": "cisco",
     "device_type": "cisco_ios",
-    "fast_cli": True,                                  #fast_cli will speed things up. underhood it will reduce global delay factor less than 1.
+    "fast_cli": False,                                  #fast_cli will speed things up. underhood it will reduce global delay factor less than 1.
 }
 
 net_connect = ConnectHandler(**cisco)
