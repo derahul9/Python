@@ -1,0 +1,12 @@
+PEP-8:
+Coding standard for Python. Style item not compulsory (indendation, line length, white space, commenting, naming convention)
+why? Helpful when there are different coders using the same style. Tools to do this - Pylint, Black, pycodestyle
+
+Testing:
+Pytest and Unitest (inbuilt by importing unitest)
+
+CI-CD:
+CI: Push small codes on a very frequent basis to the development branch. This will help to detect problem quickly.
+CD: Continuous Delivery. Once approved in CI , code should be pushed to production.
+Once the code is pushed into CI (eg. Travis CI, PEP-8 (Pylint, Black etc.) Testing kicks off that you've developed automatically
+Different products that do that - Jenkins, Azure Pipeline, GitLab, Github action, Travis (Free and Easy for IaaC)
