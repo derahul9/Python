@@ -1,0 +1,25 @@
+Video 1:
+Netconf uses XML. NX-API and other Devices have capability to give XML output.
+Netconf has Restconf, NX-API has JSON mode then why do we need XML ? Because xml is still widely used
+Libraries - xmltodict (convert xml to more like dictionary structure), lxml, element tree
+
+Hierarchy to a xml data output. xml is tree like. It has a root node and then child nodes. child node will only have one root node to co-relate.
+The tags are called elements which are under <> and there is a text field after that.
+
+Video 2:
+In python we are mostly using lxml or built in python library. We treat only tags/elements as nodes. Text is associated with nodes.
+There could be also attributes for a tag/element which is also defined under <>
+
+In the DOM (document object model), the XML formatting that we see in a browser, All of the below are considered as nodes:
+Element nodes, Text nodes, Attribute nodes
+
+Video 3:
+If you see <jsr/>, it means you've opening tag for jsr as well as closing tag for jsr
+Sibling node: Elements in the same level of hierarchy
+Descendant node: Its like all child nodes are descendents of the very first node. Ancestor Node is opposite of descendant node
+
+Video4:
+xmltodict - converting xml to python dictionary (xml is basically series of tags with hierarchy in it)
+xml to dict translation will be difficult.
+
+
