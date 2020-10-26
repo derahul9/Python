@@ -1,0 +1,37 @@
+R1#sh version
+Cisco IOS Software, 3700 Software (C3745-ADVIPSERVICESK9-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)
+
+R2#sh version
+Cisco IOS Software, 3700 Software (C3745-ADVIPSERVICESK9-M), Version 12.4(25d), RELEASE SOFTWARE (fc1)
+
+R1#sh run | s bgp
+router bgp 100
+ no synchronization
+ bgp log-neighbor-changes
+ network 20.0.0.1
+ neighbor 20.0.0.2 remote-as 100
+ neighbor 20.0.0.2 update-source Loopback1
+ no auto-summary
+R1#sh ip bgp summ
+BGP router identifier 20.0.0.1, local AS number 100
+BGP table version is 1, main routing table version 1
+
+Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+20.0.0.2        4   100      20      20        1    0    0 00:00:11        0
+R1#
+
+
+R1(config)#router bgp 100
+R1(config-router)#shut
+                   ^
+% Invalid input detected at '^' marker.
+
+R1(config-router)#
+R1(config-router)#
+R1(config-router)#
+R1(config-router)#neigh
+R1(config-router)#neighbor 20.0.0.2 shut ! Test-shut with comments           
+R1(config-router)#
+R1(config-router)#
+*Mar  1 00:08:11.835: %BGP-5-ADJCHANGE: neighbor 20.0.0.2 Down Admin. shutdown
+
