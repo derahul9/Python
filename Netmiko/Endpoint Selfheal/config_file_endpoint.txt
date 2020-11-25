@@ -1,0 +1,6 @@
+int tu 1
+ip ospf cost 20000
+!
+end
+!
+wr mem

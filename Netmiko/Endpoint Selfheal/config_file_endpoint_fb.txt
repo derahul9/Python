@@ -1,0 +1,6 @@
+int tu 1
+no ip ospf cost
+!
+end
+!
+wr mem
