@@ -1,0 +1,147 @@
+FEC?
+Forwarding Equivalence Class (FEC) is a set of prefixes treated in the same way. If you have packets that are sent: 1) via the same next hop, 2) exit interface, 3) and possibly with the same
+queueing policies, then those prefixes belong to the same FEC, because the have the same treatment from the perspective of the LSRs that are processing these prefixes.
+
+An FEC is a set of packets that a single router:
+(1)  Forwards to the same next hop;
+(2)  Out the same interface; and
+(3)  With the same treatment (such as queuing).
+
+Different functions in MPLS?
+- PUSH, POP, SWAP
+
+What is LDP/IGP Sync?
+- LDP IGP Sync allows the router not to forward the packets on the link where LDP is down but IGP is enabled.
+
+What is TTL Propogation in MPLS?
+- TTL Propogation is method of copying the TTL value from IP Header to MPLS Header
+
+What is the difference in per platform label space vs per interface label space?
+- Per Interface label space : If per-interface label space is used, the packet is not forwarded solely based on the label, but based on both the incoming interface and the label such that
+we can re-use the label on a different interface as it uses label and interface both.
+
+- Per platform label space: In this case forwarding is based solely on the basis of the label hence the label needs to be unique for the platform and the prefix.
+
+MPLS Explicit and Implicit Null ?
+These have to do with PHP (Penultimate Hop Popping).
+Imagine you have a couple of routers like this: CE1 - PE1 - P1 - P2 - PE2 - CE2
+
+Let’s say CE1 sends an IP packet meant for CE2. What happens is that PE1 adds a label and then it gets label switched from PE1 to P1 > P2 > PE2. To save PE2 a label lookup, we use PHP.
+This means that P2 will remove the label before forwarding it to PE2. This will save PE2 a label lookup. P2 knows that it has to do PHP because PE2 will tell it to. This is done with the
+implicit NULL label which has a value of 3. This is the default behavior btw. The problem with PHP is Qos. In the MPLS header, we can use the EXP bits for marking. When P2 pops the label, how
+does PE2 know what marking the packet should have? It doesn’t have a clue. To prevent this from happening, we can use the explicit NULL label which has a value of 0. The PE2 will use this to
+signal P2 to use label value 0 where we can store the EXP bits. The label won’t be popped and PE2 will receive the marking.
+
+A value of 1 represents the router alert label. This label value is legal anywhere in the label stack except at the bottom. When a received packet contains this label value at the top of the
+label stack, it is delivered to a local software module for processing. The actual packet forwarding is determined by the label beneath it in the stack. However, if the packet is further
+forwarded, the router alert label should be pushed back onto the label stack before forwarding. The use of this label is analogous to the use of the router alert option in IP packets. Since
+this label cannot be at the bottom of the stack, it is not associated with a particular network layer protocol.
+
+How can you differentiate VPNv4 and IPv4 address-family?
+Address-family VPNv4 is used to transport VRF traffic, which is quite heavier (96 bits) than normal IPv4 packets, and address-family IPv4 is used to transport traditional 32-bit IPv4 packets.
+When we deploy L3VPN, we need VPNv4 peering between the PEs to take the VRF routes (labeled with RD, RT) to the corresponding destination PE router.
+
+Two label retention modes are possible?
+- Liberal Label Retention (LLR) mode: In LLR mode, an LSR keeps all received remote bindings in the LIB. One of these bindings is the remote binding received from the downstream or next hop
+for that FEC. The label from that remote binding is used in the LFIB, but none of the labels from the other remote bindings are put in the LFIB; therefore, not all are used to forward packets.
+Why keep the labels around that are not used? Routing is dynamic in a network. At any time, the routing topology can change—for example, due to a link going down or a router being
+removed—therefore, the next-hop router for a particular FEC can change. At that time, the label for the new next-hop router is already in the LIB and the LFIB can be quickly updated with the
+new outgoing label.
+
+- Conservative Label Retention (CLR) mode: The second label retention mode is CLR mode. An LSR that is running this mode does not store all remote bindings in the LIB, but it stores only
+the remote binding that is associated with the next-hop LSR for a particular FEC. In short, the LLR mode gives you quicker adaptation to routing changes, whereas CLR mode gives you fewer labels
+to store and a better usage of the available memory on the router.
+
+Is CEF Required for MPLS?
+The key point is that LDP or RSVP TE are able to generate distribute labels for FECs but they do not create the FECs from stratch.
+Cisco MPLS code takes advantage of the work done by CEF and uses the data mantained by CEF, to build the LFIB that is the table where for each FEC there is an association with a label taken
+from the local node label space. The work done by CEF is not so different from what is needed by MPLS: the biggest difference is that the CEF table is kept local and not exported to any other
+device. MPLS FEC/label bindings are advertised. Each vendor has its internal tecnique to build a table of FECs to be used as starting point for MPLS code.
+
+LDP Modes ?
+Downstream means the labels are sent in the opposite direction of that used by traffic.
+
+Downstream-on-Demand (DoD) label distribution mode:
+In the DoD mode, each LSR requests its next-hop (that is, downstream) LSR on an LSP, a label binding for that FEC. Each LSR receives one binding per FEC only from its downstream LSR on that FEC.
+The downstream LSR is the next-hop router indicated by the IP routing table.
+
+Unsolicited Downstream (UD) label distribution mode:
+Unsolicited means that the label/FEC association is built based on the topology FIB instead of waiting for some device to ask a label for the FEC.
+
+In neighbor discovery command, I am receiving only xmit, what does it mean?
+It means your ldp neighbor router is not sending updates to you, where you are using sh mpls ldp discovery command. Check your remote side neighbor configurations, whether Mpls is configured
+on interfaces or not using sh mpls interfaces. Then Check global command of mpls ip and ip cef and ldp update source as well.
+
+MPLS Neighborship:
+https://www.networkers-online.com/blog/2009/01/ldp-neighbor-discovery-session-establishment-and-maintenance/
+
+LSRs will negotiate the hold time and select the lower timer to use, which means changing the timer should be done on both peers to take effect.
+
+What is LDP and TDP in MPLS?
+LDP is a protocol that automatically generates and exchanges labels between routers. Each router will locally generate labels for its prefixes and will then advertise the label values to its
+neighbors. It's a standard, based on Cisco's proprietary TDP (Tag Distribution Protocol).
+
+MPLS TE?
+The inspiration behind MPLS TE is Constraint Based Routing (CBR), which takes into account the possibility of multiple paths between a specific source/destination pair in a network. With CBR,
+the operation of an IP network is enhanced so the least cost routing can be implemented as well as variables to find paths from a source to destination. CBR requires an IGP, like OSPF or IS-IS,
+for its operation. CBR is the backbone of the TE tunnel definition and is defined on the ingress routers to the MPLS domain when implementing MPLS TE. Resource availability and link status
+information are calculated using a constrained SPF calculation in which factors such as the bandwidth, policies, and topology are taken into consideration to define probable paths from a
+source to destination.
+
+config:
+ip explicit-path name R2-R4-R3
+    next-address 24.24.24.4
+    next-address 34.34.34.3
+    next-address 3.3.3.3
+
+interface tunnel 23                                                  #One-Way Tunnel
+    tunnel destination 3.3.3.3
+    tunnel mode mpls traffic-eng                                     #
+    tunnel mpls traffic-eng autoroute announce                       #So this interface is not in OSPF but it is treated as if it is in OSPF by this command
+    tunnel mpls traffic-eng bandwidth 2000                           #Earlier defined a 5 Meg RSVP Tunnel so using 2 Meg out of it now
+    tunnel mpls traffic-eng path-option 1 explicit name R2-R4-R3     #Very first path option is going to reference the explicit path R2-R4-R3
+
+FRR?
+If anything fails in the primary MPLS TE path then the router that detects the failure needs to send path error message to the headend router. The headend router would send the traffic
+to a secondary path if the path exists. There is a delay between detecting the failure and activating secondary path and during that time traffic is dropped. Better way is the router (PLR-
+Point of local Repair that detected the failure create an alternative path to the tail end and also send a path error message to the source ie. use a detour to bypass failure. This is FRR.
+The source can then decide to use a secondary path if needed. One disadvantage is the detour used may not be optimal. The bandwidth on the primary path may not be available on the detour but
+secondary path may have it. Also, it will also retry to resignal the primary path after retry timer that is 30 second.
+
+RSVP?
+A typical RSVP session involves the following sequence of events:
+A potential sender starts sending RSVP path messages to the session address. A receiver, wanting to join the session, registers itself if necessary. For example, a receiver in a multicast
+application would register itself with IGMP. The receiver receives the path messages. The receiver sends appropriate Resv messages toward the sender. These messages carry a flow descriptor,
+which is used by routers along the path to make reservations in their link-layer media. The sender receives the Resv message and then starts sending application data.
+
+Explicit Route Objects
+Explicit Route Objects (EROs) limit LSP routing to a specified list of LSRs. By default, RSVP messages follow a path that is determined by the network IGP's shortest path.
+However, in the presence of a configured ERO, the RSVP messages follow the path specified.
+
+EROs consist of two types of instructions: loose hops and strict hops. When a loose hop is configured, it identifies one or more transit LSRs through which the LSP must be routed.
+The network IGP determines the exact route from the inbound router to the first loose hop, or from one loose hop to the next. The loose hop specifies only that a particular LSR be included
+in the LSP. When a strict hop is configured, it identifies an exact path through which the LSP must be routed. Strict-hop EROs specify the exact order of the routers through which the RSVP
+messages are sent. You can configure loose-hop and strict-hop EROs simultaneously. In this case, the IGP determines the route between loose hops, and the strict-hop configuration specifies
+the exact path for particular LSP path segments.
+
+RSVP Message Types:
+RSVP uses the following types of messages to establish and remove paths for data flows, establish and remove reservation information, confirm the establishment of reservations, and report
+errors-
+Path Messages: Each sender host transmits path messages downstream along the routes provided by the unicast and multicast routing protocols. Path messages follow the exact paths of application
+data, creating path states in the routers along the way, thus enabling routers to learn the previous-hop and next-hop node for the session. Path messages are sent periodically to refresh path
+states.
+Resv Messages: Each sender host transmits path messages downstream along the routes provided by the unicast and multicast routing protocols. Path messages follow the exact paths of application
+data, creating path states in the routers along the way, thus enabling routers to learn the previous-hop and next-hop node for the session. Path messages are sent periodically to refresh path
+states.
+PathTear Messages
+ResvTear Messages
+PathErr Messages
+ResvErr Messages
+ResvConfirm Messages
+
+SR?
+Global SID: Globally Unique
+Adjacency SID: Helps to steer traffic i.e traffic engineer. Basically stack the adjacency labels in the data plane one by one so that traffic takes that path and the inner most label would be
+Global SID to reach the destination. This is different than RSVP as the network nodes don't know about the tunnel, they are not tracking it (no soft state). This is really software defined
+networking as the nodes are just forwarding and they have no idea on the control plane. So TE without complexity but that's why path computation engine or Orchestrator is important because
+the nodes are not holding any state. The path computation engine needs to understand the topology and the bandwidth of each link to calculate the required paths in real time.

@@ -1,0 +1,174 @@
+Total - (165)
+Easy-
+-------
+unique email address
+two sum
+license key formatting
+backspace string compare
+plus one
+missing ranges
+moving average from data stream
+logger rate limiter
+Best time to buy and sell stocks
+add binary
+valid palindrome
+move zeroes
+add strings
+second highest salary
+first bad version
+verifying alien dictionary
+valid palindrome 2
+subtree of another tree
+merge sorted array
+maximum subarray
+excel sheet column number
+excel sheet column title
+most common word
+valid parentheses
+reorder data in log files
+Divisor Game
+Single Number
+Missing Number
+Happy Number
+Valid Anagram
+Remove Linked List elements
+Remove duplicates from a sorted list
+Palindrome Linkedlist
+Isomorphic strings
+Combine two tables
+First Unique Character in a String
+Majority Element
+Rectangle Overlap
+Remove all adjacent duplicates from a string
+Invert Binary Tree
+Find Pivot Index
+Maximum no. of ballons
+Sqrt(x)
+Add Digits
+Shuffle the Array
+Reformat Date
+Employees Earning More Than Their Managers
+Number of 1 Bits
+Maximum Product of Three Numbers
+Monotonic Array
+Baseball Game
+Convert Binary Number in a Linked List to Integer
+Intersection of Two Arrays
+Intersection of Two Arrays II
+Ransom Note
+Two Sum II - Input array is sorted
+Design Hashmap
+Fizz Buzz
+Middle of the Linked List
+Range Sum Query - Immutable
+Reverse Words in a String III
+Word Pattern
+Re-order data in log files
+Reverse Vowels of a String
+Same Tree
+Binary Tree Paths
+Min stack
+Roman to Integer
+Implement queue using stacks
+Nested list weight sum
+Island Perimeter
+Find Winner on a Tic Tac Toe Game
+Number of Recent Calls
+Minimum Absolute Difference
+Find All Numbers Disappeared in an Array
+Search Insert Position
+Summary Ranges
+Longest Common Prefix
+Is Subsequence
+Minimum moves to equal array elements
+Count Prime
+Maximum Depth of Binary Tree
+diameter of binary tree
+Climbing stairs
+Sub domain Visit Count
+Symmetric Tree
+High Five
+Height Checker
+Find Common Characters
+Pascal Triangle
+Running Sum of 1d Array
+
+Medium -
+---------
+reverse linked list
+repeated string match
+bulls and cows
+longest substring with at most two distinct characters
+next closest time
+merge intervals
+encode and decode strings
+campus bikes
+minimum area rectangle
+unique word abbreviation
+Remove Comments
+bomb enemy
+utf-8 validation
+zigzag iterator
+count complete tree nodes
+3 sum
+product of array except self
+continuous subarray sum
+divide two integers
+kth largest element in an array
+multiply strings
+k closest point to origin
+decode ways
+task scheduler
+subarrray sums equals k
+minimum remove to make valid parentheses
+design add and search words data structure
+meeting rooms 2
+find all anagrams in a string
+letter combinations of a phone number
+maximum size sub array sums equal k
+Range Sum Query 2D
+sparse matrix multiplication
+Word Break
+reverse words in a string
+compare version numbers
+search in rotated sorted array
+spiral matrix
+string to integer
+remove k digits
+LRU Cache
+Maximum Length of a Concatenated String with Unique Characters
+Gas station
+battleships in a board
+binary tree zigzag level order traversal
+search a 2d matrix II
+prison cells after n days
+top k frequent words
+longest palindromic substring
+Longest Substring Without Repeating Characters
+Analyze User Website Visit Pattern
+Find smallest divisor given a threshold
+validate ip address
+K-diff pairs in an array
+Container with most water
+binary tree right side view
+Time based key value store
+Coin change
+Leftmost column with atleast one
+Design underground system
+Remove all adjacent duplicates in string 2
+Subarray Sums Divisible by K
+Find All Duplicates in an Array
+Find the Duplicate Number
+subsets
+Pairs of Songs With Total Durations Divisible by 60
+Design hit counter
+Daily Temperatures
+number of islands
+Robot bounded in circle
+max area of island
+Perfect Squares
+
+Hard-
+-------
+Trapping Rain Water
+Integer to English

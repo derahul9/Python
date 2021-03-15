@@ -1,0 +1,31 @@
+1. Define Requirements?
+Functional:
+- Basic requirements of the system
+
+Non-Functional:
+- Scalability
+- Reliability
+- Availability
+- Efficiency
+- Manageability
+
+2. Capacity Requirement?
+- Traffic
+- Bandwidth
+- Storage
+- Memory
+
+3. HLD?
+- Flow Diagram
+- System API
+- Database Design
+
+4. LLD?
+- Datasharding (Hash Sharding/Range Sharding, Consistent Hashing/Memcached)
+- Loadbalancing
+- Replication and Fault Tolerance
+- Caching (80/20 Rule,Clearing least recent used, CDN)
+
+5. Additional Consideration?
+- Telemetry for forecasting
+- Security and Rate limiting

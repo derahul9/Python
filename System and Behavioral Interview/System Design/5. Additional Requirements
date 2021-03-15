@@ -1,0 +1,11 @@
+- Telemetry for forecasting
+- Security and Rate limiting
+
+How many times a short URL has been used, what were user locations, etc.? How would we store these statistics? If it is part of a DB row that gets updated on each view, what will happen
+when a popular URL is slammed with a large number of concurrent requests? Some statistics worth tracking: country of the visitor, date and time of access, web page that referred the click,
+browser, or platform from where the page was accessed.
+
+Can users create private URLs or allow a particular set of users to access a URL? We can store the permission level (public/private) with each URL in the database. We can also create a
+separate table to store UserIDs that have permission to see a specific URL. If a user does not have permission and tries to access a URL, we can send an error (HTTP 401) back. Given that
+we are storing our data in a NoSQL wide-column database like Cassandra, the key for the table storing permissions would be the ‘Hash’ (or the KGS generated ‘key’). The columns will store
+the UserIDs of those users that have permission to see the URL.

@@ -1,0 +1,53 @@
+- Data Sharding/Partioning (Hash Sharding/Range Sharding, Consistent Hashing/Memcached)
+- Loadbalancing
+- Replication and Fault Tolerance
+- Caching (80/20 Rule,Clearing least recent used, CDN)
+- Purging
+
+Replication and Fault Tolerance?
+---------------------------------
+Redundancy is the duplication of critical components or functions of a system with the intention of increasing the reliability of the system, usually in the form of a backup or fail-safe,
+or to improve actual system performance. For example, if there is only one copy of a file stored on a single server, then losing that server means losing the file. Since losing data is
+seldom a good thing, we can create duplicate or redundant copies of the file to solve this problem. Redundancy plays a key role in removing the single points of failure in the system and
+provides backups if needed in a crisis. For example, if we have two instances of a service running in production and one fails, the system can failover to the other one.
+
+Replication means sharing information to ensure consistency between redundant resources, such as software or hardware components, to improve reliability, fault-tolerance, or accessibility.
+Replication is widely used in many database management systems (DBMS), usually with a primary-replica relationship between the original and the copies. The primary server gets all the
+updates, which then ripple through to the replica servers. Each replica outputs a message stating that it has received the update successfully, thus allowing the sending of subsequent updates.
+
+Caching?
+----------
+We can cache URLs that are frequently accessed. We can use some off-the-shelf solution like Memcached, which can store full URLs with their respective hashes. Before hitting backend storage,
+the application servers can quickly check if the cache has the desired URL. How much cache memory should we have? We can start with 20% of daily traffic and, based on clients’ usage
+patterns, we can adjust how many cache servers we need. As estimated above, we need 170GB memory to cache 20% of daily traffic. Since a modern-day server can have 256GB memory, we can
+easily fit all the cache into one machine. Alternatively, we can use a couple of smaller servers to store all these hot URLs.
+
+Which cache eviction policy would best fit our needs? When the cache is full, and we want to replace a link with a newer/hotter URL, how would we choose? Least Recently Used (LRU) can be a
+reasonable policy for our system. Under this policy, we discard the least recently used URL first. We can use a Linked Hash Map or a similar data structure to store our URLs and Hashes,
+which will also keep track of the URLs that have been accessed recently. To further increase the efficiency, we can replicate our caching servers to distribute the load between them.
+How can each cache replica be updated? Whenever there is a cache miss, our servers would be hitting a backend database. Whenever this happens, we can update the cache and pass the new
+entry to all the cache replicas. Each replica can update its cache by adding the new entry. If a replica already has that entry, it can simply ignore it.
+
+Purging or DB cleanup?
+-----------------------
+Should entries stick around forever, or should they be purged? If a user-specified expiration time is reached, what should happen to the link?
+If we chose to actively search for expired links to remove them, it would put a lot of pressure on our database. Instead, we can slowly remove expired links and do a lazy cleanup. Our
+service will ensure that only expired links will be deleted, although some expired links can live longer but will never be returned to users.
+
+Whenever a user tries to access an expired link, we can delete the link and return an error to the user.
+A separate Cleanup service can run periodically to remove expired links from our storage and cache. This service should be very lightweight and can be scheduled to run only when the user
+traffic is expected to be low. We can have a default expiration time for each link (e.g., two years).After removing an expired link, we can put the key back in the key-DB to be reused.
+Should we remove links that haven’t been visited in some length of time, say six months? This could be tricky. Since storage is getting cheap, we can decide to keep links forever.
+
+CAP Theorem?
+-------------
+CAP theorem states that it is impossible for a distributed software system to simultaneously provide more than two out of three of the following guarantees (CAP): Consistency,
+Availability, and Partition tolerance. When we design a distributed system, trading off among CAP is almost the first thing we want to consider. CAP theorem says while designing a
+distributed system, we can pick only two of the following three options:
+
+Consistency: All nodes see the same data at the same time. Consistency is achieved by updating several nodes before allowing further reads.
+
+Availability: Every request gets a response on success/failure. Availability is achieved by replicating the data across different servers.
+
+Partition tolerance: The system continues to work despite message loss or partial failure. A partition-tolerant system can sustain any amount of network failure that doesn’t result
+in a failure of the entire network. Data is sufficiently replicated across combinations of nodes and networks to keep the system up through intermittent outages.

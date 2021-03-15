@@ -1,0 +1,35 @@
+https://www.youtube.com/watch?v=lFq5mYUWEBk&t=820s
+Binary Tree:
+------------
+Searching an element in a list is very basic operation. If we do it one by one the complexity will be linear. But in a binary search tree the parent node left side
+will have lesser values and  the right side will have bigger values. So it becomes easier to search. search complexity = O(logN)
+
+https://www.youtube.com/watch?v=qp8u-frRAnU&t=830s
+Linked List:
+-------------
+- Linked list is a list where each element has a link to the memory of the next element.
+- In list when we insert a new element it has to move all the elements to its right by 1 position and insert it. In LL Insertion is easier: We just link the last element to
+the memory of the element that we want to insert and link our element to the next elements memory location.
+- Also we don't need to allocate space with Linkedlist. When we create a list python by default allocates 5 memory position to the list, not so in LL
+
+Binary Search Tree Algo -
+------------------------------
+nums = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+target = 4
+
+class Solution:
+    def BST(self, nums, target):
+            l = 0
+            r = len(nums)
+            while l <= r:
+                mid = (l+r) // 2
+                if target > nums[mid]:
+                    l = mid + 1
+                if target < nums[mid]:
+                    r = mid - 1
+                if target == nums[mid]:
+                    return mid
+
+z = Solution()
+print (z.BST(nums, target))
+

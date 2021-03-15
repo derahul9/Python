@@ -1,0 +1,359 @@
+Dictionary Operation:
+-----------------------
+#for k, v in new_int.items():                      #Loop through the dictionary keys, values and print only the values that you're interested in
+    #print (k)
+    #print (v['interfaceStatus'])
+
+for elements in arp:                               #Loop through the dictionary without keys and values
+    #print ('#' * 12)
+    #print (elements['mac'])
+    #print (elements['ip'])
+
+#print (new_interfaces.keys())                   # To know the keys of a dictionary
+#print (new_interfaces['result'])                # To know the values of a key in a dictionary
+
+# Why do we need data serialization - Because the data structure files can be transported to different machines/OS
+# Thats why we serialize what's there indide of our pc to serial of bytes. This needs to be standard as any one should be able to understand
+# YAML and JSON are two standardization protocol. JSON is good for pc to pc communication where humans are not involved. Payload for API (NX-API, E-API)
+# Json is not that human readable, hence YAML. YAML is used for inventory in salt, Ansible. YAML file starts with ---
+
+Jinja 2 example1 -
+----------------------
+from jinja2 import Template
+
+bgp_config = """                          #This can also be a template file
+router bgp {{ bgp_as }}
+  bgp router-id {{ router_id}}
+  bgp log-neighbor-changes
+  neighbor {{ peer1 }} remote-as 44
+"""
+
+my_vars = {                              #This can also be an excel file. use csv.DictReader to convert it into dictionary format
+    "bgp_as": 22,
+    "router_id": "1.1.1.1",
+    "peer1": "20.20.20.20"
+}
+
+j2_temp = Template(bgp_config)
+output = j2_temp.render(**my_vars)    #my_vars will render the dictinary my_vars and pass it as key value pairs
+#output = j2_temp.render(bgp_as=22, router_id="1.1.1.1", peer1="2.2.2.2") #Also can be done this way
+print (output)
+
+Jinja 2 example2 -
+----------------------
+# Environment is used for the following benefits -
+# if your template is in a different folder then environment can be used (file handling)
+# Also, if a variable is left blank it won't throw an error but just fill that part in the template with blank value. Environment will take care of this.
+# if your template has reference to other templates, environment will make that possible as well.
+
+from __future__ import unicode_literals, print_function
+from jinja2 import FileSystemLoader, StrictUndefined
+from jinja2.environment import Environment
+
+env = Environment(undefined=StrictUndefined)                    #Whenever any variable is undefined throw an error. This is useful for error handling.
+env.loader = FileSystemLoader([".", './Templates/'])            #This is to take the file from a directory which is defined. It will look one at a time current directory --> Template
+
+my_vars = {
+    "bgp_as": 22,
+    "router_id": "1.1.1.1",
+    "peer1": "20.20.20.20"
+}
+
+template_file = 'bgp_config.j2'
+template = env.get_template(template_file)
+output = template.render(**my_vars)
+print(output)
+
+NAPALM -
+---------
+# NAPALM - Network automation and Programmability application layer
+# NAPALM - Create a standard set of operations across a range of platforms. Three Categories - Config + Getter + Validate
+# Lower level connection info is hidden from you and you have uniform napalm api to use (Support - EoS, IOS, IOS-XR, NX-OS, Junos)
+# Data structure returned is also uniform for different vendors. getfact() will return dictionary with the same key across platforms
+# napalm getter documentation --> http://napalm.readthedocs.io/en/latest/support/index.html#getters-supportt-matrix
+
+NX-API:
+-------
+# Need below two lines in the Switch config
+# feature nxapi
+# nxapi https port 8443
+# If you get kvm permission denied error when running Nexus then run sudo chown /dev/kvm or sudo chmod 777 /dev/kvm
+
+XML -
+-----
+Netconf uses XML. NX-API and other Devices have capability to give XML output.
+Netconf has Restconf, NX-API has JSON mode then why do we need XML ? Because xml is still widely used
+Libraries - xmltodict (convert xml to more like dictionary structure), lxml, element tree
+
+Hierarchy to a xml data output. xml is tree like. It has a root node and then child nodes. child node will only have one root node to co-relate.
+The tags are called elements which are under <> and there is a text field after that.
+
+Video 2:
+In python we are mostly using lxml or built in python library. We treat only tags/elements as nodes. Text is associated with nodes.
+There could be also attributes for a tag/element which is also defined under <>
+
+In the DOM (document object model), the XML formatting that we see in a browser, All of the below are considered as nodes:
+Element nodes, Text nodes, Attribute nodes
+
+Video 3:
+If you see <jsr/>, it means you've opening tag for jsr as well as closing tag for jsr
+Sibling node: Elements in the same level of hierarchy
+Descendant node: Its like all child nodes are descendents of the very first node. Ancestor Node is opposite of descendant node
+
+Video4:
+xmltodict - converting xml to python dictionary (xml is basically series of tags with hierarchy in it)
+xml to dict translation will be difficult.
+
+GIT -
+------
+Git hub is SaaS app that is very popular on hosting online GIT repository. (Git hub uses GIT under the hood).
+
+mkdir git-test
+cd git-test/
+git init
+ls -al ——> .git (Repository - Set of information stored under .git sub directory - project folder for set of related files)
+
+git status —> will give you all  untracked files created under .git  (test1.py and test2.py)
+
+On branch master, there will be no commits yet
+
+git add test*.py (After this command it will show as changes to be committed) (after git add status will change from untracked to staging.
+
+git commit -m “Making first commit of files”  (-m is for comments)  —> This will give warning that below fields need to be filled
+
+git config —global user.email
+git config —global user.name ——> Only have to set this up once
+
+cat ~/.gitconfig —> this file will store the email and username details
+
+After above is done then you can do git commit
+
+git status —> On branch master and nothing to commit
+
+git branch —> will show the branches that we have
+
+To clone github to your pc do —> git clone url
+
+GIT Flow —
+————————
+Working Directory —> (Use git add/rm) to stage or go to staging stage —> (use git commit) to add it to the repository (.git)
+
+Now if you edit test2.py and create a new one test3.py and do git status —> test2.py will show under untracked files and test3.py will show under modified.
+
+git diff gives you the config that is differing from the old one
+
+git log —> will show us history of commits
+
+4 - Push and Pull-
+———————————
+
+git clone url (typing this command in your command prompt of pc will clone everything on github to your pc)
+
+now create a file and push it to github using —> git push origin master (origin - when we initially did the clone request, the url of github became the origin), so origin is the remote machine.
+
+git remote -v (Will give you all the remotes you have)
+
+git pull origin master (you can pull from master branch)
+
+5 - GIT branches- (The working directory is further divided into branches)
+———————————
+
+if a file is not added to repo then do rm to remove the file. If its already in staging area then do git reset head file name and then do rm to remove it
+
+to discard a change made on a file do —> git checkout — ./test2.py
+
+to discard a change made on multiple file do —> git stash
+
+git checkout -b devel master (checkout a developer branch which is based on master branch)
+
+git branch feature1 (creates feature1 branch, git checkout will go into the branch)
+
+git push origin develop (This will create a new branch on github called develop). The files on develop (except for one) and master will be same as they are different views of same files
+
+Now if you want to merge the changes made in develop branch into the master branch, then click on merge request in github.
+Whenever that request is accepted then the changes in develop branch will be merged into master branch.
+Now this can be pulled into your machine using git pull origin master.
+
+Rebase-
+——————
+In Github, you can fork nornir into nornir which is basically making a copy.
+Later you make commits and changes to the original one, the updates might not be in the copy.
+You can do git rebase to update the copy with all the updates.
+
+git fetch origin ( give me all the things that change in the origin) then go to the branch (2.0) that you want to update and  —>
+git rebase origin/2.0
+
+Useful links -
+https://github.github.com/training-kit/downloads/github-git-cheat-sheet/
+https://tutorialzine.com/2016/06/learn-git-in-30-minutes?__s=fem5hxy3xmx66jfao5wv
+https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/resolving-a-merge-conflict-using-the-command-line
+
+Libraries_PIP_VENV.txt:
+-------------------------
+You can import a library in python by -
+
+import re
+re.__file__ ( to check where python is opening the file from)
+home/gituser/rahde/VENV/lib/python3.6/re.py (Its a single file so its a module, python tries to find the file in
+the location and reads it line by line until it fully loads it)
+
+Module —> A single python file and package being directory of related python files
+
+Whenever you import a file and try to use it, all your commands will be prefixed with re, eg. re.search()
+
+eg. help(re.search) will show us how to use that functionality
+
+We can also do —
+from re import search, findall
+(if you use it this way, when using it you just gonna do search instead of re.search)
+
+Tools Testing CI-CD:
+-------------------------
+PEP-8:
+Coding standard for Python. Style item not compulsory (indendation, line length, white space, commenting, naming convention)
+why? Helpful when there are different coders using the same style. Tools to do this - Pylint, Black, pycodestyle
+
+Testing:
+Pytest and Unitest (inbuilt by importing unitest)
+
+CI-CD:
+CI: Push small codes on a very frequent basis to the development branch. This will help to detect problem quickly.
+CD: Continuous Delivery. Once approved in CI , code should be pushed to production.
+Once the code is pushed into CI (eg. Travis CI, PEP-8 (Pylint, Black etc.) Testing kicks off that you've developed automatically
+Different products that do that - Jenkins, Azure Pipeline, GitLab, Github action, Travis (Free and Easy for IaaC)
+
+Netmiko -
+----------
+#Paramiko is for servers. Netmiko is based on Paramiko but does away some of the complexities in Paramiko.
+#If you set an invalid device type, then you'll get an error listing all the netmiko listed device types.
+
+from netmiko import ConnectHandler
+import inventory
+#import inventory import *                   #This line imports all line space
+from inventory import cisco                 #Importing a code that you have written, reusability of a python program, Can be done in two ways as shown
+
+import logging                                     #importing netmiko logging
+logging.basicConfig(filename='test.log', level=logging.DEBUG)
+logger = logging.getLogger("netmiko")
+
+for device in (cisco, inventory.cisco1):
+    net_connect = ConnectHandler(**device)
+    output = net_connect.send_command("show ver", expect_string=r'#') #This is the message you should get on the last line #
+    print (output)
+
+PyEz:
+-----
+#Netconf is a standardized API came in 2006. Juniper Netconf was the first one. It needs some sort of secured transport to run across (ssh).
+#Netconf uses TCP port 830. You don't want to be dealing with Netconf directly, use NCC Client library (Python talks to Netconf). In
+#Juniper terms use PyEz which will abstract the lower level mechanics from you. Netconf Layers -  Content (xml data) - Operations (edit config)
+# - Messages (rpc, rpc-reply) - Secure Transport (SSH and TLS)
+#NETCONF and Yang are generally tied together. YANG Is just a modelling language. YANG specifies what data should look like.
+#What happens is YANG model for say an interface is converted into XML and passed into NETCONF Channel. The remote device will de-construct
+#the xml data and return YANG data. Across time, we didn't want YANG data model to be tied with API. So they created REST API which could
+#transport YANG data through REST Channel. (Instead of running XML data through ssh channel, we can have REST API which can transport YANG)
+#Similarly we can do with GRPC instead of REST, but they are just ways of transporting YANG over...
+
+#Juniper PYEZ was created by Juniper several years ago to help interface to thier API. They are running Netconf for thier API. THis library
+#makes easier to connect to their API.
+
+REST API-
+----------
+import os
+import requests                                                                       #Python requests library to do http get reques
+from pprint import pprint
+
+from urllib3.exceptions import InsecureRequestWarning                                  #This is to ignore SSL Certificates for unsecured sites
+
+requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)            #This is to ignore SSL Certificates for unsecured sites
+
+
+if __name__ == "__main__":                                                             #Enter main part of the code
+
+    token = "63aa375e2590159ca3171c5269931043b85d33cf"                                 #Read the documentation to understand how to generate token
+    url = "https://netbox.lasthop.io/api/dcim/devices/"
+    http_headers = {"accept": "application/json; version=2.4;"}                        #Read the documentation to understand how to generate these values
+    if token:
+        http_headers["authorization"] = "Token {}".format(token)
+
+    response = requests.get(url, headers=http_headers, verify=False)                  #verify false is to not verify SSL certificate
+    response = response.json()
+
+    print()
+    pprint(response)
+    print()
+
+Concurrency -
+---------------
+#Concurrency vs Parallelism - Chcek out the graph from Kirk. Concurrency means over a short time multiple things are getting executed. It may
+#or may not imply that they are executed in parallel.
+
+#Ways to achieve to concurrency - Threads/Processes/Asynchronous (Threads and Processes in this course)
+
+# Threads
+#In a single process there could be multiple threads which job scheduler can pick which will allow us achieve concurrency.
+#Eg. Multiple SSH sessions to different device. There could be potential race condition, also we need locks to gain access to a resource
+#which can also lead to deadlock condition. Eg. Thread 1 gains a lock on some resource, thread 5 is then waiting and can reach deadlock.
+#Global interpreter lock  - GIL - IF we have a single process, 50 threads, we can only run 1 thread at a time. (This would have been big deal if we
+#were CPU bound but in network automation we are always IO bound. We are always waiting for remote device to respond. Hence, GIL Doesn't cause problem.
+
+# Processes
+# (50 individual processes as 50 ssh connections and say if we have 10 cpu's then 10/50 process will run at same time : Parallelism)
+# In both Process/Threads the way to exchange info between them is difficult.
+
+TextFSM-
+---------
+# To see where your instance of textfsm is :
+# >>> import textfsm
+# >>> textfsm.__file__ --> '/home/rahul/.local/lib/python3.6/site-packages/textfsm/parser.py'
+# This could have been also run as - rahul@rahul-virtual-machine:~/Documents/Python_Projects/Python/TextFSM$
+# python3 /home/rahul/.local/lib/python3.6/site-packages/textfsm/parser.py textfsm_test.template show_ip_int_br.txt
+# This is a glue code to bind the template and the text file together
+# In the template file , $ indicates a variable and so $$ will indicate end of line. Value are the Regex. Only Record will be in the op
+
+import textfsm
+from pprint import pprint
+
+template_file = "textfsm_test.template"
+template = open(template_file)
+
+with open("show_ip_int_br.txt") as f:
+    raw_text_data = f.read()
+
+# The argument 'template' is a file handle and 'raw_text_data' is a string.
+re_table = textfsm.TextFSM(template)
+data = re_table.ParseText(raw_text_data)
+template.close()
+
+pprint(data)
+
+eapi-
+--------
+# The following config needs to be on the device to enable eAPI -
+# management api http-commands
+# protocol https
+# no shut
+# If you get kvm permission denied error when running Arista eos then run sudo chown /dev/kvm or sudo chmod 777 /dev/kvm
+import pyeapi
+import ipdb
+
+ipdb.set_trace()
+
+connection = pyeapi.client.connect(
+    transport="https",
+    host="192.168.1.2",
+    username="arista",
+    password="arista",
+    port="443",
+)
+
+# enable = getpass("Enable: ")
+#device = pyeapi.client.Node(connection, enablepwd=enable)     #Creating node object and passing eAPI connection
+device = pyeapi.client.Node(connection)                        #Creating node object and passing eAPI connection
+#output = device.enable(["show version", "show ip arp"])
+#print(output)
+
+# When the debugger is on, type n to continue to next line,
+# type p connection to check the connection object
+# type p device to check the node object
+# dir(device) to check the available functions for the object
+# !device.model to get the model of the device (Examples - !device.version, !device.version_number, !device.get_config(), !help(device.get_config())

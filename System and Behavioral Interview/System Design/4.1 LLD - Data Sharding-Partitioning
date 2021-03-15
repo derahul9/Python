@@ -1,0 +1,82 @@
+Data Sharding?
+--------------
+Sharding is the process of breaking up large tables into smaller chunks called shards that are spread across multiple servers. A shard is essentially a horizontal data partition that contains
+a subset of the total data set, and hence is responsible for serving a portion of the overall workload. The idea is to distribute data that can’t fit on a single node onto a cluster of database
+nodes. Sharding is also referred to as horizontal partitioning. The distinction between horizontal and vertical comes from the traditional tabular view of a database. A database can be split
+vertically storing different table columns in a separate database, or horizontally storing rows of the same table in multiple database nodes.
+
+Why Shard a Database?
+Business applications that rely on a monolithic RDBMS hit bottlenecks as they grow. With limited CPU, storage capacity, and memory, query throughput and response times are bound to suffer.
+When it comes to adding resources to support database operations, vertical scaling (aka scaling up) has its own set of limits and eventually reaches a point of diminishing returns.
+
+On the other hand, horizontally partitioning a table means more compute capacity to serve incoming queries, and therefore you end up with faster query response times and index builds. By
+continuously balancing the load and data set over additional nodes, sharding also enables usage of additional capacity. Moreover, a network of smaller, cheaper servers may be more cost
+effective in the long term than maintaining one big server.
+
+Besides resolving scaling challenges, sharding can potentially alleviate the impact of unplanned outages. During downtime, all the data in an unsharded database is inaccessible, which can be
+disruptive or downright disastrous. When done right, sharding can ensure high availability: even if one or two nodes hosting a few shards are down, the rest of the database is still available
+for read/write operations as long as the other nodes (hosting the remaining shards) run in different failure domains. Overall, sharding can increase total cluster storage capacity, speed up
+processing, and offer higher availability at a lower cost than vertical scaling.
+
+Data Partitioning?
+--------------------
+Data partitioning is a technique to break up a big database (DB) into many smaller parts. It is the process of splitting up a DB/table across multiple machines to improve the manageability,
+performance, availability, and load balancing of an application. The justification for data partitioning is that, after a certain scale point, it is cheaper and more feasible to scale
+horizontally by adding more machines than to grow it vertically by adding beefier servers.
+
+Horizontal partitioning: In this scheme, we put different rows into different tables. For example, if we are storing different places in a table, we can decide that locations with ZIP codes
+less than 10000 are stored in one table and places with ZIP codes greater than 10000 are stored in a separate table. This is also called a range based partitioning as we are storing different
+ranges of data in separate tables. Horizontal partitioning is also called as Data Sharding. The key problem with this approach is that if the value whose range is used for partitioning isn’t
+chosen carefully, then the partitioning scheme will lead to unbalanced servers. In the previous example, splitting location based on their zip codes assumes that places will be evenly
+distributed across the different zip codes. This assumption is not valid as there will be a lot of places in a thickly populated area like Manhattan as compared to its suburb cities.
+
+Vertical Partitioning: In this scheme, we divide our data to store tables related to a specific feature in their own server. For example, if we are building Instagram like application -
+where we need to store data related to users, photos they upload, and people they follow - we can decide to place user profile information on one DB server, friend lists on another, and
+photos on a third server. Vertical partitioning is straightforward to implement and has a low impact on the application. The main problem with this approach is that if our application
+experiences additional growth, then it may be necessary to further partition a feature specific DB across various servers (e.g. it would not be possible for a single server to handle
+all the metadata queries for 10 billion photos by 140 million users).
+
+Directory Based Partitioning: A loosely coupled approach to work around issues mentioned in the above schemes is to create a lookup service which knows your current partitioning scheme
+and abstracts it away from the DB access code. So, to find out where a particular data entity resides, we query the directory server that holds the mapping between each tuple key to its
+DB server. This loosely coupled approach means we can perform tasks like adding servers to the DB pool or changing our partitioning scheme without having an impact on the application.
+
+Partitioning Criteria?
+------------------------
+Key or Hash-based partitioning: we apply a hash function to some key attributes of the entity we are storing; that yields the partition number. For example, if we have 100 DB servers
+and our ID is a numeric value that gets incremented by one each time a new record is inserted. In this example, the hash function could be ‘ID % 100
+
+List partitioning: In this scheme, each partition is assigned a list of values, so whenever we want to insert a new record, we will see which partition contains our key and then store it there
+
+Round-robin partitioning: This is a very simple strategy that ensures uniform data distribution. With ‘n’ partitions, the ‘i’ tuple is assigned to partition (i mod n)
+
+Composite partitioning: Under this scheme, we combine any of the above partitioning schemes to devise a new scheme. For example, first applying a list partitioning scheme and then a
+hash based partitioning. Consistent hashing could be considered a composite of hash and list partitioning where the hash reduces the key space to a size that can be listed
+
+Common Problems of Data Partitioning:
+Joins and Denormalization: Performing joins on a database which is running on one server is straightforward, but once a database is partitioned and spread across multiple machines it is
+often not feasible to perform joins that span database partitions
+
+Referential integrity:
+As we saw that performing a cross-partition query on a partitioned database is not feasible, similarly, trying to enforce data integrity constraints such as foreign keys in a partitioned
+database can be extremely difficult
+
+Rebalancing:
+There could be many reasons we have to change our partitioning scheme: The data distribution is not uniform, e.g., there are a lot of places for a particular ZIP code that cannot fit into
+one database partition. There is a lot of load on a partition, e.g., there are too many requests being handled by the DB partition dedicated to user photos.
+
+Consistent Hashing:
+Distributed Hash Table (DHT) is one of the fundamental components used in distributed scalable systems. Hash Tables need a key, a value, and a hash
+function where hash function maps the key to a location where the value is stored.
+
+index = hash_function(key)
+Suppose we are designing a distributed caching system. Given ‘n’ cache servers, an intuitive hash function would be ‘key % n’. It is simple and commonly used. But it has two major drawbacks:
+It is NOT horizontally scalable. Whenever a new cache host is added to the system, all existing mappings are broken. It will be a pain point in maintenance if the caching system contains
+lots of data. Practically, it becomes difficult to schedule a downtime to update all caching mappings. It may NOT be load balanced, especially for non-uniformly distributed data.
+In practice, it can be easily assumed that the data will not be distributed uniformly. For the caching system, it translates into some caches becoming hot and saturated while the others
+idle and are almost empty.
+
+Consistent hashing is a very useful strategy for distributed caching systems and DHTs. It allows us to distribute data across a cluster in such a way that will minimize reorganization when
+nodes are added or removed. Hence, the caching system will be easier to scale up or scale down. In Consistent Hashing, when the hash table is resized (e.g. a new cache host is added to the
+system), only ‘k/n’ keys need to be remapped where ‘k’ is the total number of keys and ‘n’ is the total number of servers. Recall that in a caching system using the ‘mod’ as the hash
+function, all keys need to be remapped. In Consistent Hashing, objects are mapped to the same host if possible. When a host is removed from the system, the objects on that host are shared
+by other hosts; when a new host is added, it takes its share from a few hosts without touching other’s shares.

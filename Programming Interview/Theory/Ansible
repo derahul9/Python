@@ -1,0 +1,21 @@
+Ansible Inventory - File location where ansible looks for the hosts : /etc/ansible/hosts
+
+A playbook consists of plays which consists of tasks which are in the json format (key-value pairs)
+- name: simple ping
+  hosts: Cisco
+  tasks:
+    - ping:
+
+NAPALM - Good thing about NAPALM versus Ansible core module is in ansible you'll have separate plays for each vendor like Junos_command. IoS_Command etc.. but for
+NAPALM you have the same play just the dev_os parameter changes
+
+Roles - Separate files for vars and tasks under Roles directory. Roles - var/tasks - main.yml directory. just call the Role name in the actual playbook under tasks
+- Generally a playbook would have vars, tasks, templates, handlers which is a one large file and we can have multiple such plays in the playbook
+- Roles allow us to break these things into more modular section. So separate sub directory for vars, tmeplates, handlers etc. in the Roles directory
+- Baically roles allows modularity which makes it easy to implement things
+- Whenever you make Roles, its always going to look into the tasks sub folder for a file called main.yml for any tasks to include
+
+Jinja 2 Templating - Using Jinja 2 templates to generate config files from values returned from NAPALM getter modules or static values.
+The above generated files could be pushed to devices using NAPALM or ansible core module.
+
+

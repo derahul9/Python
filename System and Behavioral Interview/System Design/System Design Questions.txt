@@ -1,0 +1,34 @@
+how would you build a scalable fault isolation system ?
+https://engineering.fb.com/2016/02/18/core-data/netnorad-troubleshooting-networks-via-end-to-end-probing/
+
+how would build an intent based config generation system for networks ? (Intent based Deployment and Remediation System)
+https://www.vmware.com/topics/glossary/content/intent-based-networking#:~:text=Intent%2Dbased%20networking%20(IBN),and%20reacting%20to%20network%20issues
+https://www.cisco.com/c/en/us/solutions/intent-based-networking.html#~resources
+https://www.networkworld.com/article/3202699/what-is-intent-based-networking.html
+https://www.alliedtelesis.com/en/blog/intent-based-networking
+
+4 Types of AI?
+https://learn.g2.com/types-of-artificial-intelligence (Reactive Machines, Limited Memory, Theory of mind, Self Awareness)
+
+How to crack system design round ?
+https://www.geeksforgeeks.org/how-to-crack-system-design-round-in-interviews/
+
+System desing of Uber App?
+https://www.geeksforgeeks.org/system-design-of-uber-app-uber-system-architecture/
+
+Design Messenger?
+https://leetcode.com/discuss/interview-question/220073/How-would-you-design-WhatsApp/223070
+
+Design Youtube/Netfix?
+https://www.geeksforgeeks.org/design-video-sharing-system-like-youtube/
+
+Design Google Drive?
+https://www.geeksforgeeks.org/design-dropbox-a-system-design-interview-question/
+
+Design Facebook?
+https://leetcode.com/discuss/interview-question/system-design/719253/design-facebook-system-design-interview
+
+Design Google?
+https://eileen-code4fun.medium.com/system-design-interview-mini-google-search-6fd319cd66ca
+
+

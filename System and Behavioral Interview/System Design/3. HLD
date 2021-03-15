@@ -1,0 +1,34 @@
+- Flow Diagram
+- System API
+- Database Design
+
+3 Tier Architectire - Web, Application, Database:
+The logical separation is as follows: The Web server deals with HTTP(S) requests, and passes these requests on to "handlers". They have built-in handlers for file requests - HTML pages,
+images, CSS, JavaScript etc. You can add additional handlers for requests that they cannot manage - e.g. dynamic pages delivered by the application server. Web servers implement the
+HTTP specification, and know how to manage request and response headers.
+
+The application server handles requests which create dynamic pages. So instead of serving an HTML page that is stored on the hard drive, they dynamically generate the HTML sent to the end user. Common languages/frameworks for
+this are Java/JSP, .Net (aspx), PHP, Ruby (on Rails or not), Python etc. Most of the time, this application server software is running on the same physical server machine as the web server.
+
+The database server software is where the application stores its structured information. Typically, this means custom software which allows the application server to ask questions like "how many items does user x have in their
+basket?", using a programming language. Examples are MySQL, SQL Server, Oracle (all "relational databases"), and MongoDB, Redis and CouchDB ("NoSQL" solutions). The database software can run
+on the same physical machine as the web server, but it's usually the first thing that gets hosted on separate physical hardware when the site needs to scale.
+
+- Global, Regional, Datacenter and Rack level redundancy for infrastructure components (Network, Storage and Compute)
+
+System APIs:
+- REST vs SOAP
+- createURL(api_dev_key, original_url, custom_alias=None, user_name=None, expire_date=None)
+- Security: api_dev_key (string): The API developer key of a registered account. This will be used to, among other things, throttle users based on their allocated quota.
+- Returns: (string) A successful insertion returns the shortened URL; otherwise, it returns an error code.
+
+Database Design:
+What kind of database should we use? Since we anticipate storing billions of rows, and we don’t need to use relationships between objects – a NoSQL store like DynamoDB, Cassandra or Riak
+is a better choice. A NoSQL choice would also be easier to scale. Please see SQL vs NoSQL below:
+
+The five critical differences of SQL vs NoSQL:
+SQL databases are relational, NoSQL are non-relational.
+SQL databases use structured query language and have a predefined schema. NoSQL databases have dynamic schemas for unstructured data.
+SQL databases are vertically scalable, NoSQL databases are horizontally scalable.
+SQL databases are table based, while NoSQL databases are document, key-value, graph or wide-column stores.
+SQL databases are better for multi-row transactions, NoSQL are better for unstructured data like documents or JSON.

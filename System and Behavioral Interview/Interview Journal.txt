@@ -1,0 +1,131 @@
+Revise Programs+Theory/Network Book+Interview before each interview (1 day each)
+----------------------------------------------------------------------------------------------------------------------------------------
+Google -
+----------------------------------------------------------------------------------------------------------------------------------------
+Facebook - 
+Data Center Network Engineer, Infrastructure Network Engineer
+----------------------------------------------------------------------------------------------------------------------------------------
+Amazon - derahul9@gmail.com, 7.OcT.1991
+Network Development Engineer II
+
+1. Are you subject to any non-compete or non-solicit clause or restriction that may be in effect if any when you start at Amazon?
+A. No
+
+2. Do you have any pending offers or are you actively interviewing with another company? If so, what is the deadline by which you need to respond or make a decision?
+A. I am not currently interviewing with any other company.
+
+3. What are your salary expectations?
+A. My salary expectations would be around a 30% hike to my current salary which will be approximately in the range of 145,000$ to 155,000$ plus bonus and stocks as per Amazon policy.
+
+4. Are you currently interviewing with any other teams at Amazon?
+A. I am currently not interviewing with any other teams at Amazon
+
+Topics -
+----------
+1. N/w Fundamentals : TCP
+2. R.P : BGP
+3. Authomation: Python
+4. Platform: Life of a packet
+5. Design: Network
+6. Leadership Principle: Ownership, Deliver Result, Customer Obsession, Dive Deep, Invent Simplify, Earn Trust, Bias for action
+----------------------------------------------------------------------------------------------------------------------------------------
+Microsoft-
+Network Engineer- Backbone, *Important topic - TCP
+
+Write a program in Python to check if a sequence is a Palindrome.
+Example: madam, kayak, civic, level
+
+class abc:
+    def check_palindrome(input: str):
+        a = input[::-1]
+        return a == input
+        
+        n = len(input)
+        for i in range(n-1,-1,-1):
+            b.append()
+        
+a = abc()
+print (a.check_palindrome(input))
+        
+Given an unsorted array of integers, find the length of longest continuous increasing subsequence (subarray).
+Example 1:
+input: [1,3,5,4,7]
+
+class abc:
+    def cont(input):
+        a = []
+        for i in range(len(input)-1):
+            a.append(input[i])
+            for j in range(i+1,len(input)):
+                if input[j] > input[j-1]:
+                    a.append(input[j])
+                else:
+                    break
+            b.append(a)
+            a = []
+        b = sorted(b, key = lambda P: len(P), reverse=True)
+        return len(b[0])
+        
+class abc:
+    def cont(input):
+        a = []
+        c = float('-inf')
+        for i in range(len(input)-1):
+            a.append(input[i])
+            for j in range(i+1,len(input)):
+                if input[j] > input[j-1]:
+                    a.append(input[j])
+                else:
+                    break
+            c = max(len(a), c)
+        return c
+		
+1000 routers, .abc, deployment, if no pair - skip, in alphabetically order
+
+.abc - 2
+.def - 2
+
+router_names = [r1abc, r2.def, r3.abc, 556]
+
+{abc: [r1, r3], def: [r2, r4]}
+
+class Router:
+    def deploy(self, router_names):
+        bad1 = []
+        l = len(router_names)
+        i = 0
+        while i < l:
+            if type(router_names[i]) != str:
+                bad1.append(router_names[i])
+                router_names.remove(i)
+            else:
+                try:
+                    a = (router_names[i]).split(".")[1]
+                except IndexError:
+                    bad1.append(router_names[i])
+                    router_names.remove(i)
+                    pass
+        router_name = sorted(router_names key: lambda P: P.split(".")[1]]
+        from collections import defaultdict
+        d = defaultdict(list)
+        good = []
+        bad = []
+        for data in range(len(router_names)):
+            domain = router_names[data].split(".")[1]
+            d[domain].append(data)
+        #{abc: [r1, r3], def: [r2, r4]}
+        for i, v in d.items():
+            if len(v) == 2:
+                good.append(v)
+            else len(v):
+                bad.append(v)
+        #return (good, bad)
+        print ("THe good list is {}".format(good))
+        print ("THe bad list is {}".format(bad))
+        # [[r1,r3], [r2,r4]]
+
+
+router = Router()
+print (router.deploy(router_names))
+----------------------------------------------------------------------------------------------------------------------------------------
+

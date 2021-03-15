@@ -1,0 +1,80 @@
+1. Lists/arrays
+2. Stack - Implemented as lists: we can use pop() and append() functions
+         - Using deque, from collections import deque: we can use pop and push functions
+           stack = deque()
+
+3. Dictionary/Hash Tables (Key: Value pairs)
+   - for i, v in range(len(dict)): #Assigning values to keys of a dictionary
+        dict[i] = v
+   - for i,v in dict.items():  #Looping over the value of a dictionary
+        a.append(v)
+
+4. LinkedList
+
+5. Tree - Binary Tree (Binary search tree is sorted, so searching becomes function of log instead of n^2). Also a non-linear data structure like others which is useful in some cases
+
+6. Queues - https://www.geeksforgeeks.org/difference-between-stack-and-queue-data-structures/
+         - Implemented as lists: we can use pop() and append() functions
+         - Bydefault Follows FIFO principle instead of LIFO principle of stack
+
+7. trie (retrieval) - https://www.geeksforgeeks.org/trie-insert-and-search/ (Similar to binary tree with efficient time coimplexity)
+
+8. Graphs - https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/ (A Graph is a non-linear data structure consisting of nodes and edges.
+The nodes are sometimes also referred to as vertices and the edges are lines or arcs that connect any two nodes in the graph.)
+
+Programming:
+--------------
+Dynamic Programming -
+----------------------
+https://www.geeksforgeeks.org/solve-dynamic-programming-problem/ (bottom up approach = joining optimal sub problems to get the result)
+(* May use recursion and memoization but not compulsory)
+
+Recursive Programming -
+-------------------------
+https://www.geeksforgeeks.org/recursion/ (top down approach = dividing bigger problem into subproblems)
+
+Recursion vs Backtracking -
+-----------------------------
+In recursion function calls itself until reaches a base case. In backtracking you use recursion in order to explore all the possibilities until you get the
+best result for the problem.
+
+Backtracking vs DFS-
+----------------------
+Backtracking is an algorithmic-technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those
+solutions that fail to satisfy the constraints of the problem at any point of time (by time, here, is referred to the time elapsed till reaching any level of the
+search tree).
+
+Usually, a depth-first-search is a way of iterating through an actual graph/tree structure looking for a value, whereas backtracking is iterating through a
+problem space looking for a solution. Backtracking is a more general algorithm that doesn't necessarily even relate to trees.
+
+DFS is the special form of backtracking; backtracking is the general form of DFS. If we extend DFS to general problems, we can call it backtracking.
+If we use backtracking to tree/graph related problems, we can call it DFS. They carry the same idea in algorithmic aspect.
+
+DFS vs BFS -
+-------------
+-If you know a solution is not far from the root of the tree, a breadth first search (BFS) might be better.
+-If solutions are frequent but located deep in the tree, BFS could be impractical.
+-If the tree is very deep and solutions are rare, depth first search (DFS) might take an extremely long time, but BFS could be faster.
+-If the tree is very wide, a BFS might need too much memory, so it might be completely impractical.
+-If the search tree is very deep you will need to restrict the search depth for depth first search (DFS), anyway (for example with iterative deepening).
+
+Depth-first Search:
+-------------------
+Depth-first searches are often used in simulations of games (and game-like situations in the real world). In a typical game you can choose one of several possible
+actions. Each choice leads to further choices, each of which leads to further choices, and so on into an ever-expanding tree-shaped graph of possibilities.
+
+For example in games like Chess, tic-tac-toe when you are deciding what move to make, you can mentally imagine a move, then your opponent’s possible responses,
+then your responses, and so on. You can decide what to do by seeing which move leads to the best outcome.
+Only some paths in a game tree lead to your win. Some lead to a win by your opponent, when you reach such an ending, you must back up, or backtrack, to a previous
+node and try a different path. In this way you explore the tree until you find a path with a successful conclusion. Then you make the first move along this path.
+
+Breadth-first Search:
+-----------------------
+The breadth-first search has an interesting property: It first finds all the vertices that are one edge away from the starting point, then all the vertices that
+are two edges away, and so on. This is useful if you’re trying to find the shortest path from the starting vertex to a given vertex. You start a BFS, and when you
+find the specified vertex, you know the path you’ve traced so far is the shortest path to the node. If there were a shorter path, the BFS would have found it already.
+
+Breadth-first search can be used for finding the neighbour nodes in peer to peer networks like BitTorrent, GPS systems to find nearby locations, social networking
+sites to find people in the specified distance and things like that.
+
+

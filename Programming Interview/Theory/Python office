@@ -1,0 +1,70 @@
+Projects -
+----------
+1. Self heal automation for mpls endpoints with degraded circuits.
+A. SNMP trap sent to automation server with Router and Interface name.
+B. Query to vantage DB to get all the information about that router. Neighbor IP, Tunnel name, Tunnel number, Interface etc.
+C. Perform prechecks usng Netmiko
+D. If pre-check pass then render a Jinja 2 template using variables from the Vantage DB.
+E. Push the config and verify using Netmiko.
+F. Send a ticket to level 1 for normalization using a front end.
+
+2. Endpoint upgrade automation using Jinja 2 -
+-------------------------------------------------
+- Similar to above
+
+3. API Query to Splunk, Solarwinds to get logs and build Tableau dashboard -
+------------------------------------------------------------------------------
+- import requests, getpass
+- function to make the DB Query/API call and pass the authentication parameters.
+- Change the select query to get relevant information
+- Loop over the output (dictionary) and extract the key value pairs
+
+Solarwinds Query:
+------------------
+from orionsdk import Swisclient
+import requests, getpass
+npm_server = "**"
+_get_device_by_name = '''SELECT Sysname, MachineType, I.CustomProperties.ARCHROLE
+                FROM Orion.Nodes
+                WHERE MachineType like '%4431%'
+                WHERE SysName LIKE '*'
+
+swis = SwisClient(npm_server, username, password)
+node_id1 = swis.query(_get_device_by_name)['results']
+
+Splunk_Query:
+--------------
+import requests
+import json
+
+def get_data_splunk(username, password, query):
+    splunk_server = ""
+    Search_API =
+    result = []
+    search = {'output_mode': 'json', 'search': 'search {}'.format(query)}
+    resp = requests.get(splunk_server + search_API, params=search, verify=False, auth=(username, password)
+    resp_list = resp.text.split('\n')[:-1]
+    return resp_list
+
+log_source = '(sourcetype=cisco syslog or sourcetype = arista syslog) index=ntwrk ops prod'
+query = '{}' \n (%BGP)'.format(log_source)
+
+4. Contribute to Arista and ISR Upgrades automation -
+-----------------------------------------------------
+- Perform pre-check
+- Change boot statement
+- Reload and perform post-check
+
+Coding -
+---------
+file operation:
+local_dir = r'C:\Users' + '\\'
+in_file = local_dir + user_in + ".txt"
+out_file = local_dir + user_out + ".txt"
+
+output = open(out_file, "a")
+with open(in_file, "r") as f:
+    for line in f:
+        output.write(line)
+    f.close()
+output.close()

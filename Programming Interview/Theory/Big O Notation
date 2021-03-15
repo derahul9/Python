@@ -1,0 +1,171 @@
+https://www.youtube.com/watch?v=IR_S8BC8KI0
+Time complexity:
+-----------------
+Big O Notation is used to measure how running time or space requirements for your program grows as input size grows
+Any linear function can be represented as time = a*n + b (Mathematical representation necessary because absolute time may vary depending on the system used)
+b is constant so let's only keep the faster growing term, i.e. time = a*n. Now if we drop a which is a constant we get time = O(n) (Big O time complexity is order of n for this program)
+if time doesn't increase with the number of inputs then time = O(1). If we run 2 nested for loop then time = O(n**2)
+Big O refers to very large values of n. Hence if you have a function like, time = 5*n**2 + 3*n + 20, time = O(n**2) because the other values become insignificant
+
+- In an interview if someone asks you solved it with O(n) complexity can you reduce it to 0(log n) complexity. Yes, this can be done using binary search tree algorithm.
+- If you're searching for an element in a list, you can compare each element and find it using O(n) complexity or you keep on dividing the sorted array into and do a right search or a
+left search depending on the value to be searched.
+
+Iteration 1 = n/2; Iteration 2 = n/2*2 and so on; Iteration k = n/2**k, In the worst case you'll have to search through the entire array and the size becomes 1.
+(Big O is used to measure performance in worst case scenario)
+Hence, 1 = n/2**k, n = 2**k, log2n = log2 2**k (applying log2 on both sides), log2 n = k log2 2, log2 n = k
+So, k = log2 n, Space complexity of binary search will be log2 n which will be less than n.
+
+Space Complexity:
+------------------
+How much more memory use (RAM) do we need as the inputs provided to the code gets larger.
+A variable will take constant space. eg. x = 100. Arrays, Lists etc. the space gets larger with the size of Array/List.eg. Array of size 10 will take double the
+space compared to array of size 5.
+
+Why is time complexity prioritized over space complexity?
+- Because cost to produce or run processor (electricity/money) is more than RAM.
+- Also consumers are concerned about speed than RAM usage
+
+Memory Usage while Execution-
+------------------------------
+While executing, algorithm uses memory space for three reasons:
+Instruction Space:
+It's the amount of memory used to save the compiled version of instructions.
+Environmental Stack:
+Sometimes an algorithm(function) may be called inside another algorithm(function). In such a situation, the current variables are pushed onto the system stack,
+where they wait for further execution and then the call to the inside algorithm(function) is made.
+
+For example, If a function A() calls function B() inside it, then all th variables of the function A() will get stored on the system stack temporarily,
+while the function B() is called and executed inside the funciton A().
+
+Data Space
+Amount of space used by the variables and constants.
+
+But while calculating the Space Complexity of any algorithm, we usually consider only Data Space and we neglect the Instruction Space and Environmental Stack.
+
+Calculating the Space Complexity
+For calculating the space complexity, we need to know the value of memory used by different type of datatype variables, which generally varies for different operating systems, but the method for calculating the space complexity remains the same.
+
+Type	                                                                    Size
+-----                                                                      ---------
+bool, char, unsigned char, signed char, __int8	                            1 byte
+__int16, short, unsigned short, wchar_t, __wchar_t	                        2 bytes
+float, __int32, int, unsigned int, long, unsigned long	                    4 bytes
+double, __int64, long double, long long	                                    8 bytes
+
+Now let's learn how to compute space complexity by taking a few examples:
+
+{
+    int z = a + b + c;
+    return(z);
+}
+In the above expression, variables a, b, c and z are all integer types, hence they will take up 4 bytes each, so total memory requirement will be (4(4) + 4) = 20 bytes,
+this additional 4 bytes is for return value. And because this space requirement is fixed for the above example, hence it is called Constant Space Complexity.
+
+Let's have another example, this time a bit complex one,
+
+// n is the length of array a[]
+int sum(int a[], int n)
+{
+	int x = 0;		// 4 bytes for x
+	for(int i = 0; i < n; i++)	// 4 bytes for i
+	{
+	    x  = x + a[i];
+	}
+	return(x);
+}
+In the above code, 4*n bytes of space is required for the array a[] elements.
+4 bytes each for x, n, i and the return value.
+Hence the total memory requirement will be (4n + 12), which is increasing linearly with the increase in the input value n, hence it is called as Linear Space Complexity.
+
+Similarly, we can have quadratic and other complex space complexity as well, as the complexity of an algorithm increases.
+
+But we should always focus on writing algorithm code in such a way that we keep the space complexity minimum.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a = [1,4,5,6,3,8,7]
+x = 5
+
+def sort(a):
+    b = len(a)
+    for i in range(0, b -1):
+        for j in range(i +1, b -1):
+            if a[i] > a[j]:
+                a[i], a[j] = a[j], a[i]
+    y = b // 2
+    if a[y] > x:
+        for i in range(0, y-1):
+            if a[i] == x:
+                print("1")
+                return a[i] == x
+    if a[y] < x:
+        for i in range(y +1, b -1):
+            if a[i] == x:
+                print("2")
+                return a[i] == x
+    if a[y] == x:
+        print("3")
+        return a[y] == x
+
+
+print (sort(a))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

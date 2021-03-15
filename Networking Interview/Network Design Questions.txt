@@ -1,0 +1,167 @@
+Datacenter Design -
+--------------------
+- Application and Security Requirement. If 3-Tier Security architecture on same physical network infrastructure then implement VRFs for segmentation at the network layer.
+- Intent based Controller or SDN or a Centralized Server to (Intent/ Control plane/Configure Devices) reducing deployment efforts and standardizing config.
+- Single ToR with Kubernetes Cluster design to divide load across multiple racks instead of dual ToR saving cost and creating multiple points of failure.
+- Host based IP table Firewall rules to save cost of physical firewalls as well as filter on the host so that netork bandwidth is conserved.
+- CLOS Design for redundancy at each layer and ECMP avoiding Spanning tree timers/reconvergence and also ease of expanding the fabric if required
+- Distributed gateway routing instead of centralized on the core to avoid north-west traffic for east-west flows
+- Microsegmentation using containers and BGP between ToR and Server Pod for L3 Connectivity.
+- Segregation of L2 CLOS and L3 CLOS to avoid using VXLAN EVPN.
+- Link Capacity planning by discussing with App owners, IP Space reduction using IPv6 and IP unnumbered.
+- Selection of Core/Spine/ToR Devices as per backplane buffer/asic/line rate requirement
+
+Nexus 9K Platform Architecture -
+-----------------------------------
+Non-blocking vs Blocking Backplane -
+Non blocking means the backplane can process traffic line rate tx/rx on each port including uplinks
+Non-blocking means it can handle ALL traffic at "wire speed" (data goes out as fast as it comes in, regardless of how many ports the data is coming in on).
+
+A switch with an inferior switching fabric might add latency to your data if it's being flooded with input on multiple ports.
+To move a Ethernet frame from input port to output port it has to traverse an internal backplane. Non-blocking means the backplane is fast enough so no matter how
+busy each port is incoming frames are never delayed due to backplane congestion. This value is easy to calculate. Switched Ethernet is full duplex. In the case of
+Fast Ethernet that means each port is capable of 200 Mbps (100 Mbps in each direction. Each connection requires a pair of ports, one input one output. So a
+hypothetical 16 port Fast Ethernet Switch needs a 1.6Gbps backplane to be non-blocking.
+
+Like anything else in engineering the answer is: it depends. Non-blocking is nice to have but adds cost. So the answer is what price are you willing to pay?
+IP data tends to be very bursty. A blocking architecture will not cause  perceptible delay for most situations. It all depends on the degree of blocking
+Note: non-blocking does nothing to relieve congestion on individual ports. For example if all traffic on our hypothetical 16 port switch was to a single port
+(a server perhaps) the maximum load on the backplane is only 200 Mbps. Incoming frames will be queued due to congestion on the outbound server port.
+
+https://www.cisco.com/c/en/us/products/collateral/switches/nexus-9000-series-switches/white-paper-c11-729987.html
+
+Backbone Design -
+-----------------
+- Intent based Controller or SDN or a Centralized Server to (Intent/ Control plane/Configure Devices) reducing deployment efforts and standardizing config.
+- Templating of config based on the Role/Platform (eg. NTP on Cisco PE Router) certify and push it from the central device.
+- Streaming telemetry from a OOB Network to get live data and closed loop automation for self healing. (Useful for operational efficiency)
+- Using Multi vendor equipment in each of the multi-plane design to avoid hitting bugs
+- For Backbone, Create more reliable routers through the use of "carrier-class" characteristics, such as multiple CPUs, power supplies, and generators; and even redundant routers
+- Backbone, Internet Routers should be Carrier-class which are able to support Internet Routing table
+- Ring topology instead of Star or Hub and Spoke to have back up path always to have no single point or link of failure.
+- SR instead of MPLS LDP because of it operational simplicity (No LDP required labels will be carried under IGP TLV : OSPF LSA 10: Opaque LSA) and ease of doing Traffic Engineering
+(Distributed or Centralized). Because Hard to do RSVP
+
+Given its position at the top of the network hierarchy, two requirements of the backbone topology are clear: it must be reliable and it must scale.
+
+ASR 9006 Platform Architecture -
+-----------------------------------
+- A backplane (or "backplane system") is a group of electrical connectors in parallel with each other, so that each pin of each connector is linked to the same
+relative pin of all the other connectors, forming a computer bus. It is used as a backbone to connect several printed circuit boards together to make up a complete
+computer system. Backplanes commonly use a printed circuit board, but wire-wrapped backplanes have also been used in minicomputers and high-reliability applications.
+
+A backplane is generally differentiated from a motherboard by the lack of on-board processing and storage elements. A backplane uses plug-in cards for storage and processing.
+
+In the Cisco ASR 9006 Router, Cisco ASR 9010 Router, and Cisco ASR 9904 Router, the following components are field replaceable units (FRU):
+All line cards
+RSP cards
+Power modules
+Fan trays
+Air filters
+Line card and RSP blank fillers
+Compact flash disk
+Gigabit Ethernet small form-factor pluggable (SFP) transceiver modules
+10-Gigabit Ethernet small form-factor pluggable (SFP+) transceiver modules
+10-Gigabit Ethernet small form-factor pluggable (XFP) transceiver modules
+Optional card cage doors (Cisco ASR 9010 Router only)
+
+https://www.cisco.com/c/en/us/td/docs/iosxr/asr9000/hardware-install/overview-reference/b-asr9k-overview-reference-guide/b-asr9k-overview-reference-guide_chapter_010.html
+
+Making it Reliable-
+--------------------
+Reliability can be acquired by employing two methods. First, you can create more reliable routers through the use of "carrier-class" characteristics, such as multiple CPUs, power supplies, and generators;
+and even redundant routers. Ultimately, however, any backbone will include WAN links that rely on a great deal of equipment and environmental stability for their operation, which represents a real risk of
+ultimate failure. If the carrier's up-time guarantees are not sufficient, you have no choice but to design a backbone that is resilient to link failure.
+
+Most backbone topologies are, therefore, initially designed based on financial constraints, such as user population density, or application requirements; and WAN service availability.
+This initial design can be subsequently refined quite effectively by statistical analysis of traffic levels after the backbone is operational, and the availability of new WAN technologies is known.
+Data network requirements analysis is a relatively new art.
+
+Segment Routing -
+-------------------
+https://netmindblog.com/2019/01/16/segment-routing-l3vpn-and-te/
+https://netmindblog.com/2019/01/05/segment-routing/
+The SR can support any type of control plane such as distributed, centralized or hybrid. (For traffic Engineering)
+
+Each router and each link has an associated SID (Segment Identifier) where SID for each node in the routing domain participating with SR must be globally unique and is assigned by a network administrator
+and represent the shortest path to the router.
+
+Segment Routing has several benefits such as:
+
+SDN ready
+Simplify network deployment as there is no requirement additional protocols apart IGP
+Scalability as avoid TE tunnels configuration, avoid large amount of LSP for MPLS-TE, avoid large amount of LDP labels.
+
+OSPF LSA 10 Opaque LSA for MPLS-TE
+
+For IPv4 with SR there is still requirement to rely on MPLS data-plane forwarding however there is no more prerequisite to run LDP, as all data-plane capabilities and label ranges are advertised using the
+SR-capabilities sub-TLV inserted into the OSPF LSA-type 10. With SR we can reduce number of protocols needed to reach the same goal as everything is carried by means of single IGP protocol. SR allows us to
+reduce network complexity by reducing control-plane protocols and simplify troubleshooting.
+
+Gloabl Cluster ID and Multiple Cluster ID in BGP RR -
+----------------------------------------------------
+The BGP—Multiple Cluster IDs feature allows an iBGP neighbor (usually a route reflector) to have multiple cluster IDs: a global cluster ID and additional cluster IDs that are assigned to
+clients (neighbors). Prior to the introduction of this feature, a device could have a single, global cluster ID.
+
+https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_bgp/configuration/xe-16/irg-xe-16-book/bgp-multiple-cluster-ids.html
+
+Benefit of Multiple Cluster IDs Per Route Reflector:
+---------------------------------------------------------
+The BGP—Multiple Cluster IDs feature allows a route reflector (RR) to belong to multiple clusters, and therefore have multiple cluster IDs. An RR can have a cluster ID configured on a global
+basis and a per-neighbor basis. A single cluster ID can be assigned to two or more iBGP neighbors. Prior to this feature, an RR had a single, global cluster ID, which was configured by the
+bgp cluster-id router configuration command. When a cluster ID is configured per neighbor (by the neighbor cluster-id router configuration command), the following two changes occur:
+
+The loop prevention mechanism based on the CLUSTER_LIST attribute is automatically modified to take into account multiple cluster IDs.
+The network administrator can disable client-to-client route reflection based on cluster ID, which allows the network design to change.
+
+The loop prevention mechanism and the CLUSTER_LIST propagation rules are described in the section “How a CLUSTER_LIST Attribute is Used.” Disabling client-to-client reflection is described
+in the section “Behaviors When Disabling Client-to-Client Route Reflection.”
+
+BGP Attributes -
+------------------
+BGP chooses a route to a network based on the attributes of its path. Four categories of attributes exist as follows:
+
+Well-known mandatory: Must be recognized by all BGP routers, present in all BGP updates, and passed on to other BGP routers. For example, AS path, origin, and next hop.
+Well-known discretionary: Must be recognized by all BGP routers and passed on to other BGP routers but need not be present in an update, for example, local preference.
+Optional transitive: Might or might not be recognized by a BGP router but is passed on to other BGP routers. If not recognized, it is marked as partial, for example, aggregator, community.
+Optional nontransitive: Might or might not be recognized by a BGP router and is not passed on to other routers, for example, Multi-Exit Discriminator (MED), originator ID.
+
+* Also note - iBGP best path selection is general path selection only it will go down till IGP metric to next hop to break the tie basically using IGP Metric to select the best path.
+
+Type 1 vs Type 2 LSA in OSPF:
+------------------------------
+Each router within the area will flood a type 1 router LSA within the area. In this LSA you will find a list with all the directly connected links of this router. How do we identify a link?
+
+The IP prefix on an interface. The link type. There are 4 different link types:
+Link Type											Description	Link ID
+
+1	Point-to-point connection to another router.	Neighbor router ID
+2	Connection to transit network.					IP address of DR
+3	Connection to stub network.						IP Network
+4	Virtual Link									Neighbor router ID
+
+The second LSA type (network LSA) is created for multi-access networks by the DR.
+The scenario where you actually see a benefit from a LSA 2 is in the event you have more than three routers in the segment because you actually exchange LSA type 1 with both the DR and the BDR.  Hypothetically, if you have numerous
+routers in the segment, lets say 100, each router that isn't the DR or the BDR would only have have to exchange LSA1 to the DR and BDR, they wouldn't have to exchange LSAs to the other 98 routers which obviously is an optimization.
+
+Type-1 LSA is one of the fundamental piece of information of the SPT, but in cases where your routers are in a shared segment, the exchange of type-1 LSA per every adjacent router is not optimal. Remember that routers inside a LAN
+only exchange LSAs with the DR and BDR (this is because the DROTHERs form adjacencies only with these). In order to perform the calculations, the routers in the segment query the Type-2 LSA, which has the information regarding
+to the LAN (all nodes in the segment are described in this LSA), and in this way the OSPF tree is simplified thanks to the type-2 LSA.
+
+On the other hand, if type-2 LSA did not exist, every router would have to exchange it's type-1 LSA witch each other (which would lead to form an adjacency per router and the amount of flooding would go out of control sometimes,
+n(n-1)/2 adjacencies would have to be formed in the LAN), which will consume bandwidth (this is not a big issue in todays networks, but back then it was) and the tree will be more complex.
+
+R-R Design:
+------------
+https://packetpushers.net/bgp-rr-design-part-1/
+
+One disdvantage of RR: Reduced Path Diversity
+One of the very basic principle for achieving fast convergence is to pre-calculate the backup path. You might have noticed this principle with MPLS-TE FRR and IP FRR. Similarly fast convergence
+for BGP prefixes (BGP PIC Edge) can be achieved by pre-calculating next best path for the prefix “P”. This is pretty easy to achieve in a full-mesh iBGP configuration as an iBGP neighbor has
+visibility to all the paths from its iBGP neighbors. The problem we face with introducing RR’s is that an iBGP neighbor looses visibility to all the possible paths for prefix “P” as RR only
+sends the best path to the RR clients.
+
+The other impact is around multi-pathing. If there are 5 equal paths for a prefix “P” then ideally one would prefer to use all the five paths equally. Again, as RR’s just sends the  best path,
+one looses capability of load balancing for BGP prefixes “P”.
+
+

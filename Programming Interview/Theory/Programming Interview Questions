@@ -1,0 +1,167 @@
+- I have been using Python at work mostly to automate network tasks which would apply on multiple nodes and have a standard template.
+- For e.g. use Jinja 2 templating for creating scripts for code upgrade on 3000+ cisco routers.
+- use Python's Netmiko module to SSH into devices and run self heal scripts for traffic failover
+- use API and DB Query to gather information from Solarwinds and other tools and parsing the data using dictionary/for-looping to store in excel format
+- use Bitbucket/GIT repository to share code with peers by pushing my code into the Dev branch
+- Worked on eAPI/ NX-API to gather information from Arista/Nexus devices in JSON/XML format to perform automated health checks
+- used NAPALM to have a standard getter module for multivendor devices in the lab environment. Text-FSM to convert into JSON format using templates
+- Ran a few Ansible playbooks for code upgrades, which consisted of plays, inventory files and Roles.
+
+- Also I have a good hands on grasp of datastructures and alogorithms which has enabled to deliver the above projects successfully
+- Datastructures: List/Arrays, Hash-map/Dictionary, Stack/Queue, LinkedList, Binary Trees
+- Algorithms: Big(O) time complexity, Sorting Algorithms, Recursion, Binary search (DFS/BFS), Dynamic Programming etc.
+
+Python Syntax Errors:
+---------------------
+Error caused by not following the proper structure (syntax) of the language is called syntax error or parsing error.
+
+Python Logical Errors (Exceptions):
+-------------------------------------
+Errors that occur at runtime (after passing the syntax test) are called exceptions or logical errors.
+
+ZeroDivisionError - try to divide a number by zero
+IndexError - Raised when the index of a sequence is out of range
+ImportError - try to import a module that does not exist
+KeyError -	Raised when a key is not found in a dictionary
+FileNotFoundError - they occur when we try to open a file(for reading) that does not exist
+TypeError -	Raised when a function or operation is applied to an object of incorrect type
+
+Catching Exceptions in Python
+In Python, exceptions can be handled using a try statement.
+
+The critical operation which can raise an exception is placed inside the try clause. The code that handles the exceptions is written in the except clause.
+
+We can thus choose what operations to perform once we have caught the exception. Here is a simple example.
+
+# import module sys to get the type of exception
+import sys
+
+randomList = ['a', 0, 2]
+
+for entry in randomList:
+    try:
+        print("The entry is", entry)
+        r = 1/int(entry)
+        break
+    except:
+        print("Oops!", sys.exc_info()[0], "occurred.")
+        print("Next entry.")
+        print()
+	finally:
+		print("The 'try except' is finished")
+
+print("The reciprocal of", entry, "is", r)
+Output
+
+The entry is a
+Oops! <class 'ValueError'> occurred.
+Next entry.
+The 'try except' is finished
+
+The entry is 0
+Oops! <class 'ZeroDivisionError'> occured.
+Next entry.
+The 'try except' is finished
+
+The entry is 2
+The 'try except' is finished
+The reciprocal of 2 is 0.5
+
+In this program, we loop through the values of the randomList list. As previously mentioned, the portion that can cause an exception is placed inside the try block.
+If no exception occurs, the except block is skipped  and normal flow continues(for last value). But if any exception occurs, it is caught by the except block (first and second values).
+Here, we print the name of the exception using the exc_info() function inside sys module. We can see that a causes ValueError and 0 causes ZeroDivisionError.
+
+How to do testing of your code in Python?
+Unit testing - https://www.datacamp.com/community/tutorials/unit-testing-python
+
+Unit Tests vs. Integration Tests:
+------------------------------------
+The world of testing has no shortage of terminology, and now that you know the difference between automated and manual testing, it’s time to go a level deeper.
+
+Think of how you might test the lights on a car. You would turn on the lights (known as the test step) and go outside the car or ask a friend to check that the lights are on (known as the test assertion). Testing multiple components
+is known as integration testing.
+
+Think of all the things that need to work correctly in order for a simple task to give the right result. These components are like the parts to your application, all of those classes, functions, and modules you’ve written.
+
+A major challenge with integration testing is when an integration test doesn’t give the right result. It’s very hard to diagnose the issue without being able to isolate which part of the system is failing. If the lights didn’t turn
+on, then maybe the bulbs are broken. Is the battery dead? What about the alternator? Is the car’s computer failing?
+
+If you have a fancy modern car, it will tell you when your light bulbs have gone. It does this using a form of unit test.
+
+A unit test is a smaller test, one that checks that a single component operates in the right way. A unit test helps you to isolate what is broken in your application and fix it faster.
+
+You have just seen two types of tests:
+--------------------------------------------
+An integration test checks that components in your application operate with each other.
+A unit test checks a small component in your application.
+You can write both integration tests and unit tests in Python. To write a unit test for the built-in function sum(), you would check the output of sum() against a known output.
+
+HTTP Error types and reason ?
+400 (Client Side Error) -
+400 Bad Request
+401 Unauthorized
+402 Payment Required
+403 Forbidden
+404 Not Found
+405 Method Not Allowed
+406 Not Acceptable
+407 Proxy Authentication Required
+408 Request Timeout
+429 Too Many Requests
+431 Request Header Fields Too Large
+451 Unavailable For Legal Reasons
+
+500 (Server Side Error) -
+500 Internal Server Error
+501 Not Implemented
+502 Bad Gateway
+503 Service Unavailable
+504 Gateway Timeout
+505 HTTP Version Not Supported
+511 Network Authentication Required
+
+Issues with Importing other developers modules in Python?
+- They should be in the same directory
+- The variables passed should be of the same data type as originally defined
+- If something is written in Python 2.6 it can create a problem when imported in 3.7
+- For a version control system, the repos needs to be shared between teams to make this module sharing process possible
+
+SDLC -
+-------
+CI/CD Workflow:
+1. Clone Bicbucket/Git repo's master branch on your local environment. Develop your code and push it to the dev branch which will be require a 2nd eye to pull and approve in the master branch. (My understanding)
+2. Bitbucket offers - Commit code, version control, keeps history logs, prevent deletion, collaboration with team, 2nd pair of eyes for pull request to master branch
+3. This work could be tracked in Jira
+4. Jenkins to compile and does syntax check again, checks repo dependency and builds it into binary (rpm) and then push it into the test environment.
+5. Testing done is -
+	A. Unit test - To have individual test cases built and test it out. This can be revisted again when there is an update in the code
+	B. Integration test - Overall working of the code as a whole
+6. Once passed this moves into the Prod branch and deployed on the orchestrator which will trigger the automation and store the logs.
+
+Classes and Objects:
+---------------------
+__init__ methods are known as dunder or magic method in python. They are basically constructors in C.
+
+if __name__ == "__main__" is a way to separate importable code and executable code
+
+If you're using a bunch of functions and sharing resources between the functions then its a tip off that you want to use classes and objects. eg. In each function you need
+to ssh into the object (device) then you can create a __init__ method inside the class to ssh and then share that connection between different functions.
+
+Inheritence:
+Inheritance allows us to define a class that inherits all the methods and properties from another class.
+Parent class is the class being inherited from, also called base class.
+Child class is the class that inherits from another class, also called derived class.
+
+class Person:
+  def __init__(self, fname, lname):
+    self.firstname = fname
+    self.lastname = lname
+
+  def printname(self):
+    print(self.firstname, self.lastname)
+
+class Student(Person):
+  pass
+
+x = Student("Mike", "Olsen")
+x.printname()
