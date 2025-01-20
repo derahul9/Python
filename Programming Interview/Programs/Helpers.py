@@ -2,6 +2,8 @@
 Easy
 binary tree path
 binary tree right side view
+diameter of binary tree
+Invert Binary Tree
 
 Merge Strings alternately
 Palindrome Number
@@ -10,6 +12,14 @@ Add two integers
 search insert position
 Find the Index of the First Occurrence in a String
 single number
+Divisor game
+Find Common Character
+Find Winner on a tic tac toe game
+High Five
+Intersection of two arrays II
+Is subsequence
+island perimeter
+
 
 Medium
 Zero array transformation 1 and 2
@@ -88,6 +98,9 @@ char = 'A'
 unicode_code = ord(char)    
 The Unicode code point for 'A' is 65.
 Useful to convert string to integer operations
+
+Useful to convert int into char
+char_code = chr(int)
 '''
 
 '''
@@ -95,4 +108,10 @@ SQL Query using primary key
 select FirstName, LastName, City, State
 from Person left join Address
 on Person.PersonId = Address.PersonId
+'''
+
+'''
+Replace and Upper Function
+S = S.replace('-', '')
+S = S.upper()
 '''
