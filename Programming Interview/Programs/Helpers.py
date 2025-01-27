@@ -1,3 +1,54 @@
+'''1 binary tree path
+binary tree right side view
+diameter of binary tree
+Invert Binary Tree
+maximum depth of binary tree
+same tree
+subtree of another tree
+symmetric tree
+2 Remove Elements
+Add two integers
+Divisor game
+Find Common Character
+Find Winner on a tic tac toe game
+High Five
+Is subsequence
+island perimeter
+logger rate limiter
+merge sorted array
+moving average from datastream
+palindrome linkedlist
+pascals triangle
+rectangle overlap
+remove duplicates from a sorted list
+remove linked list elements
+reverse linked list
+reverse vowels of string
+summary ranges
+verifying alien dictionary
+3 Zero array transformation 1 and 2
+maximum subarray
+next permutation
+find peak element
+reverse integer
+longest increasing subsequence
+move pieces to obtain a string
+jump game
+count special subsequence
+Maximum Frequency of an Element After Performing Operations I
+binary tree zigzag level order traversal
+container with most water
+count complete tree node
+decode ways
+letter combinations of a phone number
+max area of an island
+meeting rooms 2
+rotate image
+search in rotated sorted array
+spiral matrix
+validate Ip address
+Word Break'''
+
 '''
 27th Jan - 2nd Feb (1 Week) - Programming
 3rd Feb - 9th March (5 Weeks) - Networking (4Week) + Design - Amazon+Visa (1Week) 
@@ -15,72 +66,6 @@ Regex
 
 Networking Interview
 System and Behavioral Interview
-'''
-
-'''
-Easy
-binary tree path
-binary tree right side view
-diameter of binary tree
-Invert Binary Tree
-maximum depth of binary tree
-same tree
-subtree of another tree
-symmetric tree
-
-Merge Strings alternately
-Palindrome Number
-Remove Elements
-Add two integers
-search insert position
-Find the Index of the First Occurrence in a String
-single number
-Divisor game
-Find Common Character
-Find Winner on a tic tac toe game
-High Five
-Intersection of two arrays II
-Is subsequence
-island perimeter
-logger rate limiter
-merge sorted array
-moving average from datastream
-palindrome linkedlist
-pascals triangle
-rectangle overlap
-remove duplicates from a sorted list
-remove linked list elements
-reverse linked list
-reverse vowels of string
-summary ranges
-verifying alien dictionary
-
-Medium
-Zero array transformation 1 and 2
-maximum subarray
-add two numbers
-next permutation
-find peak element
-reverse integer
-longest increasing subsequence
-move pieces to obtain a string
-jump game
-count special subsequence
-subarray sum equals k
-Top K Frequent Elements
-Maximum Frequency of an Element After Performing Operations I
-binary tree zigzag level order traversal
-container with most water
-count complete tree node
-decode ways
-letter combinations of a phone number
-max area of an island
-meeting rooms 2
-rotate image
-search in rotated sorted array
-spiral matrix
-validate Ip address
-Word Break
 '''
 
 "Creating a Class, Object and calling a function from a class"
@@ -521,4 +506,9 @@ if __name__ == "__main__":                                                      
     print()
     pprint(response)
     print()
+'''
+
+'''
+Intersection of two arrays
+set.intersection(set1, set2 ... etc.)
 '''
