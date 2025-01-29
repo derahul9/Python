@@ -6,6 +6,10 @@ maximum depth of binary tree
 same tree
 subtree of another tree
 symmetric tree
+remove linked list elements
+reverse linked list
+palindrome linkedlist
+remove duplicates from a sorted list
 2 Remove Elements
 Add two integers
 Divisor game
@@ -17,13 +21,8 @@ island perimeter
 logger rate limiter
 merge sorted array
 moving average from datastream
-palindrome linkedlist
 pascals triangle
 rectangle overlap
-remove duplicates from a sorted list
-remove linked list elements
-reverse linked list
-reverse vowels of string
 summary ranges
 verifying alien dictionary
 3 Zero array transformation 1 and 2
@@ -47,14 +46,7 @@ rotate image
 search in rotated sorted array
 spiral matrix
 validate Ip address
-Word Break'''
-
-'''
-27th Jan - 2nd Feb (1 Week) - Programming
-3rd Feb - 9th March (5 Weeks) - Networking (4Week) + Design - Amazon+Visa (1Week) 
-10th March - 16th March (1 Week) - Apply+H.R (Make it Senior Role Specific)
-17th March - 31st March (2Weeks) - Screening
-April/May - Onsite
+Word Break
 
 Amazon Programming knowledge
 Pandas
@@ -63,9 +55,16 @@ Jinja
 Global Local vars
 git branch
 Regex
+Time and Space Complexity
+Different Sorting algorithms
+'''
 
-Networking Interview
-System and Behavioral Interview
+'''
+27th Jan - 2nd Feb (1 Week) - Programming
+3rd Feb - 9th March (5 Weeks) - Networking (4Week) + Design - Amazon+Visa (1Week) 
+10th March - 16th March (1 Week) - Apply+H.R (Make it Senior Role Specific)
+17th March - 31st March (2Weeks) - Screening
+April/May - Onsite
 '''
 
 "Creating a Class, Object and calling a function from a class"
@@ -511,4 +510,12 @@ if __name__ == "__main__":                                                      
 '''
 Intersection of two arrays
 set.intersection(set1, set2 ... etc.)
+'''
+
+'''
+c = array.count(item_in_array)
+'''
+
+'''
+
 '''
