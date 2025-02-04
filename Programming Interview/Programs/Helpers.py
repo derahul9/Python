@@ -48,23 +48,17 @@ spiral matrix
 validate Ip address
 Word Break
 
-Amazon Programming knowledge
-Pandas
-File Operations
-Jinja
-Global Local vars
-git branch
-Regex
-Time and Space Complexity
-Different Sorting algorithms
+File Operations + Pandas
+Regex + Jinja
+Different Sorting algorithms + Time and Space Complexity
 '''
 
 '''
-27th Jan - 2nd Feb (1 Week) - Programming
-3rd Feb - 9th March (5 Weeks) - Networking (4Week) + Design - Amazon+Visa (1Week) 
-10th March - 16th March (1 Week) - Apply+H.R (Make it Senior Role Specific)
-17th March - 31st March (2Weeks) - Screening
-April/May - Onsite
+10th Feb - 9th March (4 Weeks) - Networking
+10th March - 16th March (1Week) - System Design - Amazon/Visa Network/Tools/Code Repo/Projects/Planning
+17th March - 23th March (1Week) - Behavioral Questions+Resume+Apply (Target Senior Roles)
+24th March - 30th March (1Week) - Screening
+April/May - Interview
 '''
 
 "Creating a Class, Object and calling a function from a class"
