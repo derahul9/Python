@@ -1,4 +1,5 @@
-'''1 binary tree path
+'''Different Sorting algorithms + Binary Tree + Time and Space Complexity
+binary tree path
 binary tree right side view
 diameter of binary tree
 Invert Binary Tree
@@ -9,54 +10,22 @@ symmetric tree
 remove linked list elements
 reverse linked list
 palindrome linkedlist
-remove duplicates from a sorted list
-2 Remove Elements
-Add two integers
-Divisor game
-Find Common Character
-Find Winner on a tic tac toe game
-High Five
-Is subsequence
-island perimeter
-logger rate limiter
-merge sorted array
-moving average from datastream
-pascals triangle
-rectangle overlap
-summary ranges
-verifying alien dictionary
-3 Zero array transformation 1 and 2
-maximum subarray
-next permutation
-find peak element
-reverse integer
-longest increasing subsequence
-move pieces to obtain a string
-jump game
-count special subsequence
-Maximum Frequency of an Element After Performing Operations I
 binary tree zigzag level order traversal
-container with most water
 count complete tree node
+
+File Operations + Pandas + Regex
+merge sorted array
+summary ranges
+maximum subarray
 decode ways
-letter combinations of a phone number
-max area of an island
-meeting rooms 2
-rotate image
-search in rotated sorted array
 spiral matrix
 validate Ip address
-Word Break
-
-File Operations + Pandas
-Regex + Jinja
-Different Sorting algorithms + Time and Space Complexity
 '''
 
 '''
 10th Feb - 9th March (4 Weeks) - Networking
 10th March - 16th March (1Week) - System Design - Amazon/Visa Network/Tools/Code Repo/Projects/Planning
-17th March - 23th March (1Week) - Behavioral Questions+Resume+Apply (Target Senior Roles)
+17th March - 23th March (1Week) - Behavioral Questions+Resume+Apply
 24th March - 30th March (1Week) - Screening
 April/May - Interview
 '''
@@ -511,5 +480,97 @@ c = array.count(item_in_array)
 '''
 
 '''
+Merge last 2 commits: git rebase -i HEAD~2
+git branch: useful if you're working on multiple dev tasks and want to switch between them
+git checkout: switch to a branch
+sync with master: git pull --rebase
+'''
 
+'''
+Local vs Global var
+local can be called within the function only. if called outside it errors out vs global can be called from anywhere.
+To modify a global variable inside a function, use global keyword:
+global_var = 10
+def mod_glo():
+    global global_var
+    global_var = global_var +5
+'''
+
+'''
+***Jinja (Temp AND Var in Same file):
+from jinja2 import Template
+
+bgp_config = """
+router bgp {{ bgp_as }}
+  bgp router-id {{ router_id}}
+  bgp log-neighbor-changes
+  neighbor {{ peer1 }} remote-as 44
+"""
+
+my_vars = {
+    "bgp_as": 22,
+    "router_id": "1.1.1.1",
+    "peer1": "20.20.20.20"
+}
+
+j2_temp = Template(bgp_config)
+#########output = j2_temp.render(**my_vars)    #my_vars will render the dictinary my_vars and pass it as key value pairs
+##########output = j2_temp.render(bgp_as=22, router_id="1.1.1.1", peer1="2.2.2.2") #Also can be done this way
+print (output)
+
+Jinja (Temp AND Var in different file using Environment):
+
+***Jinja (Temp AND Var in diff file):
+# Environment is used for the following benefits -
+# if your template is in a different folder then environment can be used (file handling)
+# Also, if a variable is left blank it won't throw an error but just fill that part in the template with blank value. Environment will take care of this.
+# if your template has reference to other templates, environment will make that possible as well.
+
+from __future__ import unicode_literals, print_function
+from jinja2 import FileSystemLoader, StrictUndefined
+from jinja2.environment import Environment
+
+env = Environment(undefined=StrictUndefined)                  #Whenever any variable is undefined throw an error. This is useful for error handling.
+env.loader = FileSystemLoader([".", './Templates/'])            #This is to take the file from a directory which is defined. It will look one at a time current directoty --> Template
+
+my_vars = {
+    "bgp_as": 22,
+    "router_id": "1.1.1.1",
+    "peer1": "20.20.20.20"
+}
+
+template_file = 'bgp_config.j2'
+template = env.get_template(template_file)
+output = template.render(**my_vars)
+print(output)
+
+****Visa Router Upgrade script
+import jinja2
+import csv
+
+user_in_file = input("Please enter the variable file? ")
+user_in_file1 = input("Please enter the template file? ")
+local_datadir = r'/home/rahul/Documents/Python_Projects/Python/Jinja2/variables/'
+local_datadir1 = r'/home/rahul/Documents/Python_Projects/Python/Jinja2/Templates/'
+local_datadir_out = r'/home/rahul/Documents/Python_Projects/Python/Jinja2/variables/'
+
+input_file = local_datadir + user_in_file + ".csv"
+with open(input_file) as f:
+ read_csv = csv.DictReader(f)
+ for vars in read_csv:
+     Change_Number = vars['Change_Number']
+     Router_A = vars['Router_A']
+     template_file = local_datadir1 + user_in_file1 + ".j2"
+     with open(template_file) as a:
+          corporate_template = a.read()
+
+     template = jinja2.Template(corporate_template)
+     output_file = local_datadir_out + Change_Number + "_" + Router_A + "_" + "Install_Backout_Script"+ ".txt"
+
+     output = open(output_file, "a")
+
+     with open(output_file, 'a') as f:
+          output.write(template.render(vars))
+
+     output.close()
 '''
