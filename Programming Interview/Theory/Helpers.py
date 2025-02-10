@@ -1,35 +1,3 @@
-'''Different Sorting algorithms + Binary Tree + Time and Space Complexity
-binary tree path
-binary tree right side view
-diameter of binary tree
-Invert Binary Tree
-maximum depth of binary tree
-same tree
-subtree of another tree
-symmetric tree
-remove linked list elements
-reverse linked list
-palindrome linkedlist
-binary tree zigzag level order traversal
-count complete tree node
-
-File Operations + Pandas + Regex
-merge sorted array
-summary ranges
-maximum subarray
-decode ways
-spiral matrix
-validate Ip address
-'''
-
-'''
-10th Feb - 9th March (4 Weeks) - Networking
-10th March - 16th March (1Week) - System Design - Amazon/Visa Network/Tools/Code Repo/Projects/Planning
-17th March - 23th March (1Week) - Behavioral Questions+Resume+Apply
-24th March - 30th March (1Week) - Screening
-April/May - Interview
-'''
-
 "Creating a Class, Object and calling a function from a class"
 
 class Help:
@@ -171,7 +139,7 @@ grades = [
 '''
 Anagram = All letter should match
 Panagram = The task is to check if a string is a pangram which means it includes every letter of the English alphabet at least once
-Palindrome = 
+Palindrome = a word, phrase, or sequence that reads the same backward as forward
 '''
 
 '''
@@ -573,4 +541,142 @@ with open(input_file) as f:
           output.write(template.render(vars))
 
      output.close()
+'''
+
+'''
+from ipaddress import ip_address, IPv4Address 
+  
+def validIPAddress(IP: str) -> str: 
+    try: 
+        return "IPv4" if type(ip_address(IP)) is IPv4Address else "IPv6"
+    except ValueError: 
+        return "Invalid"
+'''
+
+'''
+opening a file and reading:
+
+with open('file.txt', 'r+') as file: #with open makes sure file is closed. r+ means read plus write
+    content = file.read() 
+print(content)
+
+    for line in file:   #reading line by line
+        print(line)
+
+Another way:
+file = open('file.txt', 'r') 
+content = file.read()
+print(content)
+file.close() # If file is opened this way then will have to explicitly close it
+
+# Write new content (this will overwrite the content from the start)
+    file.write("This is the new content!")
+
+The file pointer moves as you read or write, so you may need to use seek() to move it to the position you want (e.g., to overwrite content).
+r+ does not append; it will overwrite content starting from the current file pointer position.
+
+'a+': Opens the file for both appending and reading. If the file doesn't exist, it will create a new file.
+Using 'a' or 'a+' mode does not overwrite the existing content, it just adds to it.
+'''
+
+'''
+Big-O(n)
+- n is the input, helps us determine algorithms worst case efficiency
+- Ignores Constant, For example 5n --> O(n)
+- X = 5 + (15*2) --> O(1)
+- For loop, O(N)
+- Qudaratic time, O(n**2)
+- Binary Tree, O(log n)
+'''
+
+'''
+Sorting Algorithms:
+
+Bubble Sort is a simple comparison-based algorithm where adjacent elements are repeatedly swapped if they are in the wrong order.
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+Time Complexity: O(n**2)
+Space Complexity: O(1)
+
+Selection Sort works by repeatedly finding the minimum element and moving it to the sorted part of the array.
+Insertion Sort builds the sorted array one element at a time, by inserting each element into its correct position.
+Time Complexity: O(n**2)
+Space Complexity: O(1)
+
+Quick Sort is another divide-and-conquer algorithm that selects a pivot element and partitions 
+the array into two sub-arrays, then sorts them recursively.
+Time Complexity: O(n**2)
+Space Complexity: O(logn)
+
+Merge Sort is a divide-and-conquer algorithm that splits the array into halves, sorts each half recursively, and then merges them back together.
+Tim Sort is a hybrid sorting algorithm derived from Merge Sort and Insertion Sort. It is the default sorting 
+algorithm in Python's sorted() function and list.sort() method.
+Time Complexity: O(nlogn)
+Space Complexity: O(n)
+
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        left_half = arr[:mid]
+        right_half = arr[mid:]
+
+        merge_sort(left_half)
+        merge_sort(right_half)
+
+        i = j = k = 0
+        while i < len(left_half) and j < len(right_half):
+            if left_half[i] < right_half[j]:
+                arr[k] = left_half[i]
+                i += 1
+            else:
+                arr[k] = right_half[j]
+                j += 1
+            k += 1
+
+        while i < len(left_half):
+            arr[k] = left_half[i]
+            i += 1
+            k += 1
+
+        while j < len(right_half):
+            arr[k] = right_half[j]
+            j += 1
+            k += 1
+
+Heap Sort is based on a binary heap data structure. It transforms the array into a heap and then repeatedly 
+extracts the maximum element (for ascending order) and places it in its correct position.
+Time Complexity: O(nlogn)
+Space Complexity: O(1)
+'''
+
+'''
+Regex
+# \D - opposite of \d, matches anyhting other than digits
+# \W - Matches everything but not letters, numbers or _ character. It matches space
+# \S - Anything apart from space
+# \A - Match first letter. \Z - Match last letter.
+# [a-z] - Will give all small characters
+# [^a] - Everything except a
+# [135] - This will match any of 1,3 or 5
+# or operator example i.e. |. If 1st group matches then 2nd group won't be matched
+# ^ acts like negation as well as start of a line character too
+# $ acts like a end of character
+
+arp = "22.22.22.1  0   b4:a9:5a:ff:c8:45  VLAN#222    L 33.32.12.222"
+a = re.findall(r"\d\d+\.\d{2}\.[0-9][0-9]\.[0-9]{1,3}", arp)  #findall method returns all the matches in form of list
+print (a)
+b = re.search(r"(.+?) +(\d) +(.+?)\s{2,} (\w)*", arp) 
+print (b.group(1))
+c = re.search(r"\d\d+\.\d{2}\.[0-9][0-9]\.[0-9]{1,3}", arp)   #Search method returns only the first match
+print (c.group())
+'''
+
+'''
+10th Feb - 16th March (5 Weeks) - Networking + System Design + Amazon&Visa Network/Tools/Code Repo/Projects/Planning
+17th March - 23th March (1Week) - Behavioral+Resume+Apply
+24th March - 18th May (6Weeks) - Interview
 '''
