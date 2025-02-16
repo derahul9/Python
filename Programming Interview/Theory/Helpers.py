@@ -676,7 +676,6 @@ print (c.group())
 '''
 
 '''
-10th Feb - 16th March (5 Weeks) - Networking + System Design + Amazon&Visa Network/Tools/Code Repo/Projects/Planning
-17th March - 23th March (1Week) - Behavioral+Resume+Apply
-24th March - 18th May (6Weeks) - Interview
+17th Feb - 16th March (4 Weeks) - Networking(1/2) + MPLS/Behavioral/Resume(3) + Amazon&Visa Network/Tools/Code/Projects/Planning/Sys Design(4)
+17th March - Apply+Interview
 '''
