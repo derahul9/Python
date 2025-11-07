@@ -1,0 +1,31 @@
+CRUD (Create, Read, Update, Delete)
+
+Playbooks
+In the playbook, you define in YAML the tasks you want to run and against what managed nodes. Ansible will run each task after another. It’s also possible to define a handler, a special type of task that only runs when notified. This is useful for tasks you only want to run in specific scenarios. For example, let’s say you want to update a software package that requires a restart after updating. You could use a task for the update, and a handler to restart the service. The handler will only be notified after a successful outcome from the task. Otherwise, you would restart the service for no reason.
+
+To make playbooks dynamic, you can use variables and templates. Variables can be used for dynamic values, and templates generate files from variables. Ansible uses Jinja templates. For example, you could use a variable that sets the hostname of a Cisco switch. Let’s say the hostname is SW1. With a template, you could create a configuration file for the switch that uses that variable to create the hostname SW1 command.
+
+Roles >>> Kind of like Base class
+Roles help to organize playbooks. For example, let’s say we have a playbook to configure a router. The playbook has two tasks:
+
+Configure the hostname.
+Configure a loopback interface.
+Now, we want to configure a playbook to configure a switch. This playbook also has two tasks:
+
+Configure the hostname.
+Configure a VLAN.
+We can copy the code for the task to create the hostname from our router playbook, but that’s inefficient. Also, it’s a pain to maintain because if you want to update the task, you’ll have to do it in two playbooks.
+
+Instead, we can move the task configuring the hostname to a role. In the playbook, we only have to refer to the role instead of the task. A role can even contain more tasks. For example, you could create a “Cisco IOS device” role which has tasks you want to apply to all your Cisco devices. Such as configuring SSH, a Syslog server, SNMP server, and more. Roles are great to avoid code redundancy and keep your playbooks short and to the point.
+
+Also, you don’t have to configure these roles from scratch. You can find a huge collection of roles at Ansible Galaxy. These are roles that are created by the community. You can download them and use them in your playbooks.
+
+There are two hypervisor types:
+
+Type 1: this hypervisor runs directly on hardware, which means you can assign more resources to virtual machines. Examples are VMware ESXi, Citrix Xen, KVM, and Microsoft Hyper-V.
+Type 2: this hypervisor runs on top of an operating system like Microsoft Windows, Apple MacOS, or Linux. We usually use a type 2 hypervisor on desktops or laptops. Two popular hypervisors are Oracle VM Virtualbox and VMWare Workstation. If you have never played with virtual machines before, give Virtualbox a try. You can download it for free.
+
+Containers
+Containers are sometimes called light-weight virtual machines, but they are nothing like virtual machines.
+
+A container is a “package” that only contains an application and its dependencies, nothing more. This package is stored as a container image. Containers run on top of a container engine, which runs on top of an operating system.  Starting a container is very quick since the operating system is already running. Containers are isolated from each other by the container engine.

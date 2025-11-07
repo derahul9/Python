@@ -1,0 +1,76 @@
+Access Layer <> Distribution Layer: L2 
+Distribution Layer <> Core Layer: L3
+
+Access Layer:
+The main function of the access layer is to connect all end devices like computers, laptops, access points, IP phones, printers, etc.
+
+We require a lot of switchports to connect all these end devices. This means the price per switchport should be low, for this reason we typically use layer 2 switches on the access layer.
+Depending on our traffic flows, traffic from the access layer has to go towards the distribution layer so we might require multiple uplinks.
+POE (Power over Ethernet): if you have IP phones or wireless access points then we’ll need POE on the access layer.
+QoS features: If we use VoIP then we might need switches that support QoS to give precedence to VoIP traffic.
+Security: The access layer is the “entry” of our network. You might want to protect DHCP, ARP and spanning tree from malicious devices that are connected to the access layer.
+
+Distribution Layer:
+The distribution layer connects the access and core layer together. Since this is where we aggregate the access layer, we need sufficient bandwidth up to the core layer. Typically the distribution layer is where we use routing, this is where we terminate the VLANs from the access layer.
+
+We use routing on the distribution layer so we need switches that are capable of high throughput routing performance.
+Multiple redundant uplinks to the access and core layer. If a distribution layer switch fails, multiple access layer switches might lose connectivity.
+QoS features: just like the access layer, we might need QoS to give preference to certain traffic like VoIP.
+Security: we use access-lists on the distribution layer to filter certain inter-VLAN traffic.
+
+Core Layer:
+The core aggregates all the different distribution layer switches, this is the backbone of our network. This means the switches in the core layer should be able to handle all traffic from the distribution layer switches. Also, if the core fails all connectivity between distribution layers will be impossible.
+
+High bandwidth / throughput required.
+High availability / redundancy required. Think about multiple links, redundant power supplies, and redundant supervisors (CPU).
+QoS features: Qos is end-to-end in the campus so we also need support in the core.
+No packet manipulation: We don’t configure access-lists or make changes to packets in the core.
+
+Between the access layer and the distribution layer, we use L2 and spanning tree (STP) to block all links except one. Between the distribution and core layer, we use routing. To overcome the limitations of STP, Cisco introduced virtual-port-channels (vPC) in 2010. vPCs offer active-active uplinks from the access layer switches to the distribution layer switches. vPCs allow us to use all available bandwidth.
+
+L2 Topology
+Because of virtualization, we can now pool the computing, networking, and storage resources in a pod into virtual resources. Pooling these resources often requires large L2 domains that span from the access layer up to the core layer.
+
+With these large L2 domains that span across the entire network, we can create a flexible resource pool and reallocate resources where needed.
+
+An example is our servers. Before virtualization, we had physical servers in a single pod. With virtualization, we have hypervisors in multiple pods. A virtual machine that runs on a hypervisor in pod one can move to a hypervisor in pod two without any downtime. VMWare’s VMotion can do this but requires L2 connectivity to do it.
+
+A side effect of having resources spread out over the network instead of within a single pod is that the amount of east-west traffic increases.
+
+Traffic between the two servers has to go through all layers of our network.
+
+L3 Topology
+Another option is to use routing everywhere. The advantages of a routed topology are that we can use all links for forwarding and routing protocols converge faster than STP. If we require L2 connectivity between servers in different pods, we can use a VXLAN overlay network if needed.
+
+Advantages and disadvantages
+The three-layer hierarchical architecture has some advantages and disadvantages. Let’s take a look.
+
+Advantages
+This model offers the following advantages:
+
+Availability: When a pod goes down, the issue is usually isolated to one pod and doesn’t affect other pods.
+Security: We use L2 between the access and distribution layers and L3 between the distribution layers and core layer. We can filter traffic on L3 so we can decide what traffic goes into or outside of a pod.
+Scalability: When the network grows, we can easily add more distribution or access layer switches.
+Familiarity: We used this model for over a decade, so network engineers are familiar with this design and the protocols we use.
+
+Disadvantages
+There are, however, some disadvantages, which is why the spine-leaf architecture is gaining popularity.
+
+Here are two important disadvantages:
+
+Limited bandwidth: vPCs solve the STP problem that we can only use one active link, but vPCs are limited to two active uplinks.
+Latency: The server-to-server latency could be high, depending on the traffic path. East-west traffic between pods has to go through the distribution and core layers.
+
+The spine-leaf architecture has several advantages:
+
+Improved redundancy: Every leaf switch connects to every spine switch. This is superior to the three-layer architecture where an access layer switch is only connected to two uplink distribution layer switches where we use STP to block one of the two links.
+Increased bandwidth: The ability to use multiple active links instead of one increases bandwidth. With STP, we only have one active link out of X possible links. TRILL and SPB can use multiple active links at the same time.
+Improved scalability: Each additional spine switch adds another path to get from one leaf switch to another, and because we use all links, it increases bandwidth. This makes it easy to scale out our network if needed.
+Lower cost: Fixed-configuration switches are switches with a fixed number of ports and are usually not expandable. With the three-tier architecture, we often require chassis switches to provide enough ports. With the spine-leaf architecture, spine switches only connect to leaf switches. There are no connections between spine switches. Many spine-leaf networks use fixed-configuration switches.
+Lower latency and delay: We always only have to travel through one spine switch and leaf switch to get to a destination (unless the destination is connected to the same leaf switch). This minimizes latency and ensures a consistent delay.
+Power consumption: Fixed-configuration switches require fewer watts per port.
+
+Of course, this architecture also has some disadvantages.
+
+Cabling requirement: Because all leaf switches connect to all spine switches, you need a lot of cables.
+A limited number of hosts: The number of hosts we can support depends on the number of ports on your spine and leaf switches. If you have spine switches with 32 ports, then you could connect 32 leaf switches.

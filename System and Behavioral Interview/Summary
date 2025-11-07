@@ -1,0 +1,156 @@
+Tell me about yourself:
+- I completed Masters Degree in Network Engineering from University of Colorado Boulder
+
+- I joined Visa as a Network Engineer in the Operations team as a Network Engineer
+    - My main focus area was Datacenter Networking, initially with the traditional 3 tier architecture setup using Cisco Nexus Core switches, Cisco L2 switches, Palo Alto Firewalls and F5 loadbalancers to partition the network into multiple security zones and loadbalance the requests.
+    - My day to day involved T-shooting issues related to HSRP, OSPF, BGP neighborships, traffic shifts using OSPF/BGP Metrics.
+    - For client connectivity issues, lead Sev1/2 Calls and perform path trace route to check for sub-optimal routing, interface errors, discards, take packet captures and utilize wireshark to deep dive into packets, perform tcp analysis (check for re-transmissions, check for RST flag from client)
+    - Documenting post impact analysis using tools like solarwinds, splunk (To look for OSPF/BGP Flaps during the time of the event), check Thousand Eyes to confirm if there was 
+      a big event some where on the internet
+
+- Meanwhile, I got promoted to Staff Network Engineer
+    - Mentor Junior members of the team to cover weekend Shifts for oncall, knowledge transfer and drive changes through them
+    - Got involved with Engineering teams in the Migration project to CLOS VXLAN fabric for green field deployments using Arista/Cumulus switches
+    - Created operational runbooks containing SOP for the operations team. Set up alarming and do failover (alert) testing before making the network operational 
+    - Because, we were using static flooding initially, lot of times we had to configure the vlan/vni mapping manually, later we move to evpn using mBGP
+    - We also onboarded CDN services from Akamai/Cloudflare for Web traffic (which acted like a Global traffic manager) and advertised anycast address for which
+      we had to make changes to the Web FW to allow list the IP ranges
+    - Take lead on the Sev1/2 Calls, t-shot issues and followed up later to improve the network, used API calls to various backends to create metric reports to prove our case 
+    - I took few automation initiatives in the team:
+        - Using SNMP traps, trigger condition to > 3 ospf flaps to raise ospf tunnel cost via netmiko
+        - Using Jinja templating, create scripts and changes that would take hours to do manually before to do circuit upgrades
+        - Create API calls to get top talkers from packet capture probes and report it for different traffic flows
+        - Derive the server name from switch mac address table and send a notification to the owners of a maintanance window
+
+- I moved to AWS as a NDE II 
+    - I started design/planning datacenter interconnectivity networks using topology planning tool called Cariden.
+    - The scaling plans were created for coming 2 Years using the demand data for organic (15% year over year) and inorganic (rack landings) traffic
+    - Constraints used to design were Fiber constraints, Building constraints (Rack Space Power Cooling) , 75% traffic threshold and failure SLAs like Fiber Cuts, Building failure, traffic failure and traffic profiles (North <> South vs East <> West) and datacenter redundancy for an availability zone
+    - Design Reviews from other engineers, provide feedback, mentor engineers for automating tasks, delegate work and get projects delivered through others
+    - Collaborated with Principle Engineers, review designs by other engineers and suggested improvements here
+    - Moved to Datacenter Automation and Deployment team, Created Python Packages for End-End workflows of Fabric deployments, created common python classes and functions
+      that could be used across the teams. 
+    - Made YAML file changes, reviewed code changes by other members, performed unit test, lab testing, and integ testing of the product.
+    - Create HLD Design for a product, create sprint tasks and mentored junior members to delegate and get work done.
+    - Led cross functional goals with Firewall team to automate their process to improve land to live times for new datacenters. (Example: Create reserving mechanism)
+    - Tshot switch build, link testing issues with onsite delivery teams as part of oncall rotation.
+
+To summarize, I have overall experience in operating, designing and automating datacenter networks. I enjoy collaborating, working through others, mentoring and getting
+impactful results
+********************************************************************************************************************************************
+Questions:
+Greatest Strength and Weakness?
+- Focus on Impact, Be Open, Move Fast and keep Iterating
+- Working through others, mentoring and creating value in collaboration
+- I like to own complex issues and drive them end-end to create impactful results
+- To be very specific, my expertise are troubleshooting network issues, automation using python and design
+- One weakness over the years I have realised that I am unable to say no to any tasks/projects that are assigned to me which might have impacted my scope of work
+- i.e I could have taken more impactful problems. Lately, I have started to prioritise projects which has helped me a lot
+********************************************************************************************************************************************
+Tell me about a time you faced a crisis at work or Tell me about a time when you made a mistake. How did you handle it? Tell me about a time when you failed at work ?
+Time when you experienced failure and how did you cope with it? When did you take a risk, make a mistake, or fail? How did you respond, and how did you grow from that experience?
+
+S I switched to datacenter automation team, even though I had written stand alone python scripts, I was new to entire Code Repo/Package framework that amazon uses that
+was managed by sys de's in the team
+There was lot of new things to learn like GIT, Inheritance, Unit testing, Integration testing etc
+T My task was to own a product end-end and deliver the automation solution for deploying the network racks in a months time which was very tough
+A I had to start from scratch, reading through internal documents, spend extra hours understanding the code base and start collaborating with other tenured engineers in the team
+to get hang of the code review process. I created the HLD for the product and divided it into smaller sub tasks and started coding/creating unit testing etc
+R Initially, it took multiple revisions to follow all the standards but eventually started to get it right. Once, I got a hang off it, it took me another week to complete the 
+entire worfklow and do a pilot deployment, after fixing some minor bugs the workflow was in production without any manual input we are able to scale the layer
+Eventhough there was some pressure felt due to time constraints, the impact created felt fulfilling
+********************************************************************************************************************************************
+Toughest problem you solved, most challenging situation, biggest network problem? Describe something you built and are proud off?
+Tell me about your most successful project or Tell me about a time when you were handling a project that went outside of your scope of work. How did you handle it?
+Describe a situation where you had to deal with ambiguity when making a decision?
+Tell me about a time when you were faced with a problem that had a number of possible solutions. What was the problem and how did you determine the course of action? What was the outcome of that choice? Or When did you take a risk, make a mistake, or fail? How did you respond, and how did you grow from that experience?
+
+S I was the regional owner for designing APAC regions, specifically China region.
+T The scaling plans were suppose to be created for coming 2 Years using the demand data for organic (15% year over year) and inorganic (rack landings) traffic
+  Constraints used to design were Fiber constraints, Building constraints (Rack Space Power Cooling) , 75% traffic threshold and failure SLAs like Fiber Cuts, Building failure,
+  traffic failure and traffic profiles (North <> South vs East <> West) and datacenter redundancy for an availability zone
+A While designing the network I came across 2 challenges,
+  1. The traffic demands were absurdly high (generally we would rely on intake from the telemetry team which consisted of principle engineers), they had no networking knowledge
+     so they did not consider the power constraints and space constraints in some of the datacenters while accounting for rack landings which threw off their calculations. Also they had 
+     considered a organic growth of 50% based on past year growth but the region had matured to warrant only 15% growth. After collaborating with the team and getting the correct 
+     data I started planning the network.
+  2. I planned the network as per the demands and constraints, but later at the final moment when my design was about to be approved and orders were suppose to be placed there was
+     another issue. In China the fiber delivery is controlled by China Telecom and they denied providing more dark fiber for AWS as they were not getting enough business from us,
+     to upgrade circuits between 2 DCs. So, I had to re-design the network and made proposals to avoid scaling on that path which had to be re-approved.
+R Due to the time constraints, I was under pressure to lock in the design by the deadline which I was suppose to do which was praised by the Principal NEs as well.
+
+S I was in the Operations team at Visa, there came a Sev1 call to troubleshoot an issue where an application url was broken
+T Task was to perform troubleshooting, the application IP was suppose to be a Front VIP on a F5 loadbalancer facing the internet. There were 2 F5 Loadbalancers in Active/Passive 
+  Setup. I Checked the Active F5 Device and saw that the config for the URL was missing. I checked  with the application team on the call and understood that the VIP was configured 
+  a day before and was working till 30 minutes back. 
+A I checked the logs and saw that there was a manual sync performed from the standby F5 to active F5. I checked the standby and saw that the VIP was missing there as well but
+  confirmed that the change was indeed performed yesterday so started to think and create a theory. Before that, created the VIP on the Active LB again and the service started to 
+  work
+R After diving deep, understood that the vip was created on active and the change was not synced (The changes are sync via a cron job every 24 hours automatically)
+  30 minutes back some engineer changed a vip on the passive LB and synced to active which deleted the vip that was created yesterday causing issues. Took multiple AIs like
+  Only perform change on Active and always perform sync after that, never sync from passive to active
+********************************************************************************************************************************************
+Time when you took lead on a project and drove impact, manage it end to end or promote collaboration on a particular project? Time when you managed up/lead?
+How have you leveraged data to develop a strategy? Or How do you get people to agree with your point of view? What metrics do you use to drive positive change?
+Describe a past conflict with a co-worker and how did you resolve?
+Give me an example of when you received criticism or Tell me about a time you disagreed with feedback you received. How did you address it?
+Describe a time you took the lead on a project Or What did you do when you needed to motivate a group of individuals or promote collaboration on a particular project?
+
+S Owning a datacenter deployment product and driving impact through improving success rate of the turn up procedure and reducing the time required to make the network operational
+T Task was analyse the product and create datapoints to which steps/dependencies are talking the most time/are failing a lot, for example config push, switch build (owned by onsite team)
+FW provisioning (owned by the FW team). What I found through data points were the average and p90 duration for which the workflow stays with the external teams specifically FW team was a lot > 60 days which including steps like HW vetting, OS staging, protocol enablement, traffic testing
+A I took the lead and created a weekly forum with FW managers and senior engineers to drive improvement in the overall process, initially we had conflicts of interest because
+  they did not agree that they were bottleneck, after presenting the data and proving my point  I came up with a tactical plan to improve the process namely:
+   - Our WF use to fail if FWs had ongoing patching, created a locking mechanism to avoid dispatching our campaign until the reservation is lifted and vice versa.
+   - prioritise racks belonging to the same datacenter compared to multiple datacenter as that would expedite the process
+   - prioritise greenfield projects as they had more visibilty
+   - onboarding traffic testing to networking instead of firewall team as we already had the underlying infrastructure for it
+R Result was we see improvement for both FW provisioning times and WF success rate.
+********************************************************************************************************************************************
+Give me an example of a time you had to prioritize certain tasks or projects over others or Tell me about how you work under pressure.
+If you are given two conflicting priorities from two separate managers, how do you figure out how to proceed?
+S Transitioning from Design to Automation team
+T To finish planning HLD for BJS and also onboard automation task for a workflow
+A I prioritized the task I was already working on, completed it as there was a deadline and made sure to have clear communication to my new manager to give sometime to
+onboard new product. Successfully completed the planning task within the deadline and also had to ramp up to new teams goals post that usually its couple of weeks but had only 
+leass than a week
+R Didn't burn bridges with my previous manager while maintaining clear communication with my new manager
+********************************************************************************************************************************************
+Talk about a time when you’ve had to manage up. Tell me about a time when you felt like a good leader.
+S As the senior most member of the team and as a staff engineer , my manager would ask me represent her when there were two simultaneous issues/meetings going on.	
+T I attended all meetings, take ownership and make decisions. I would try to answer querries that other teams would have to the best of my knowledge.
+A Always mentor the new members in the team. This would earn me their trust.	
+R I think I did a good job by delivering the results that my manager was looking for.
+********************************************************************************************************************************************
+Why this Role and and do you have any questions?
+- The company is doing great, is a leader in the field and headquarted in the bay area which will be a good opportunity for growing.
+- My current skills and expertise match the Job description
+- I feel like i have plateau'd in my current role.
+********************************************************************************************************************************************
+FollowUp:
+How does day to day look like?
+Any interesting projects that you are working on?
+What will be my immediate responsibilities and what are the Career Growth Options?
+********************************************************************************************************************************************
+Monitron
+Aggregate Alerts from monitoring tools using API
+Use LLM Model to create useful analysis co-relate with user issues and output summary with a confidence score
+
+Questions to be asked:
+Hows your experience been leading the NRE org at Nvidia and Whats your vision for the org, traiging/automating self heal?
+What qualities make someone successful in the Reliability org as an engineer? How do i create impact, solve problems, get promoted etc.?
+
+Leadership principle
+Technical excellence and honesty
+Collaboration, Innovate and deliver for the customers
+
+- Tell me a time when you were wrong about something technical? (Humility)
+- Tell me a time when you made a change that led to an outage? (Ownership, Responsibility)
+- Disagreed with team decision and later found you were wrong?
+- Feedback that surprised you? Failure that you have had that made you better? Failed to meet SLA?
+- Advocate a change that you initially resisted?
+
+
+
+
+

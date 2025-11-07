@@ -30,5 +30,5 @@ print (a)
 print (c.group())
 
 txt = "The rain in Spain"
-x = re.search(r"([S]\w{4})", txt)
+x = re.search(r"([r]\w{3})", txt)
 print (x.group(1))

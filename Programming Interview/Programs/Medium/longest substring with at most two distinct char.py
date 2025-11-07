@@ -14,7 +14,7 @@ class Solution:
                 y = 1
                 a.append(s[i])
                 for j in range(i+1, len(s)):
-                    if s[j] not in a and y == 2:
+                    if s[j] not in a and y == k:
                         break
                     elif s[j] not in a and y < k:
                         a.append(s[j])

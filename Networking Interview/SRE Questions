@@ -1,0 +1,252 @@
+DC design from server ports > 3 tier/collapsed core/leaf-spine/amazon?
+https://www.noction.com/blog/oversubscription-in-networking
+
+
+Tools:
+T-Eyes: Probes
+Solarwinds: poll/traps
+Splunk: syslog 
+Netscout: Probes
+Wireshark: Analyse packets
+Cloudflare/Akamai: CDN
+F5: LB
+Palo alto/Checkpoint: Firewall
+
+NSM: Device State
+NHS: Network Health State
+Netvane: Traffic flow
+C.Amazon: Capacity forecasting
+Autochecks package
+Alfred: Network Change
+PCN: N+1 Config deployment automation
+TCELL: Device shiftback service
+Mobius/Morpheus: Link Testing
+UNS: Deployment Orchestrator
+Site YAML/Fabric Builder/GenevaBuilder/Hercules
+Cariden: Topology Plotter
+Quicksight dashboard to visualize blockers for interdc racks for TPMs:
+- Merge 2 DB tables
+- Table1: Spine scaling schedule owned by intradc planning team
+- Table2: Rack scaling project owner by interdc planning team
+- Merge on primary key of site code, basically updating ecd of rack deployment to be  + 1 month after spine scaling completion to avoid constant back and forth adding spine scaling as blocker.
+
+Describe your approach to documenting network designs and operational runbooks?
+Network Topology Diagrams: Physical and logical layouts (use standardized diagramming tools like Lucidchart or draw.io)
+Serial numbers, support contracts
+IP Addressing and Subnet Plan
+Routing Design
+Security Design
+Monitoring and Logging
+Runbook, Step-by-Step Procedures, Common Issues and Fixes, Escalation Paths
+
+What steps do you take in writing a postmortem for a network outage?
+Immediate Data Collection: Before writing, gather all relevant artifacts:
+Device logs, SNMP/syslog/streaming telemetry
+NMS and monitoring alerts
+Change management records (who did what and when)
+Incident response chat logs or war room notes
+Timeline screenshots from dashboards (latency, drops, routing flaps, etc.)
+
+Summary
+Timeline
+Impact Analysis: Affected systems/sites/services, Scope and duration of impact, Quantitative metrics if possible (e.g., "20K users impacted", "5% packet loss")
+Root Cause: What exactly broke and why, Include technical detail but make it readable
+Remediation and Recovery: What was done to restore service, Manual vs. automated actions
+Lessons Learned: What went well (detection, rollback, communication), What could have been better (testing, alerting, runbook clarity)
+Action Items: Assign owners and due dates
+Attachments: Topology diagrams, CLI output, Logs, Links to dashboards or relevant tickets
+
+What’s the difference between active and passive network monitoring? Which tools support each?
+Active Monitoring
+What it is: Proactively sends synthetic traffic (e.g., pings, HTTP requests) to test network performance and availability.
+Measures: Latency, Packet loss, Throughput, Application response times
+
+Use cases:
+SLA verification, Detecting service availability issues before users notice
+Pros: Immediate detection of issues, tests paths not currently used.
+Cons: Adds overhead traffic, might not reflect real user experience.
+
+Tools:
+Ping, traceroute: Basic reachability tests.
+ThousandEyes, Catchpoint: End-to-end synthetic testing.
+Nagios, Zabbix (with active checks): Periodic synthetic tests.
+Iperf: Active bandwidth testing.
+PIMMS (Amazon)
+
+How do you design an alerting system that minimizes noise but catches critical events?
+Define What’s Truly Critical, Good Alerts Are Actionable, Timely, Non-redundant, Context-rich
+Only alert on symptoms that require human intervention.
+Use SLI/SLO-based alerting (e.g., latency > threshold for >5 min) rather than raw metric thresholds.
+Prioritize alerts that directly impact availability, performance, or security > Core/Distribution/FWs/LBs
+Combine multiple conditions: e.g., High CPU + High Latency triggers an alert, not just one alone.
+Use tools that support alert grouping (e.g., by host, service, or region).
+Implement Alert Deduplication & Grouping: Avoid flooding on-call with one alert per node; use aggregate alerts (e.g., “20% of nodes are failing health checks”).
+Alert on Symptoms, Not Causes: Don't alert: "CPU > 80%" unless it directly correlates with performance impact.
+Review false positives and update alert thresholds. Use historical incident data and postmortems to identify which alerts were useful or noisy.
+Use Proper Alert Routing, Critical alerts → Paging (PagerDuty, Opsgenie), Warnings → Slack/email, Informational alerts → Dashboards/logs only
+Continuous Feedback Loop > Track MTTA (mean time to acknowledge) and MTTR (mean time to resolve) per alert type. Include feedback mechanisms ("Was this alert useful?") to drive improvement. Use blameless retrospectives to adjust alert logic post-incident.
+
+Describe your approach to handling a SEV1 network incident?
+Acknowledge and Assess: Immediately acknowledge the incident (SEV1 means critical business impact).
+Gather initial information: What services are impacted? How widespread is the issue?
+Check monitoring dashboards and alerts to identify symptoms (e.g., high latency, packet drops, unreachable nodes).
+
+Assemble the Response Team: Engage the incident response team — include network engineers, SREs, and relevant stakeholders.
+Assign roles: Incident commander, communications lead, troubleshooting engineers.
+Set up a war room (Slack/Teams bridge, conference call).
+
+Contain and Stabilize: Isolate the problem: Identify if the issue is due to misconfiguration, hardware failure, DDoS, or an upstream provider.
+Implement temporary mitigations: Reroute traffic, failover to backup paths, disable affected components, rate-limit traffic if necessary.
+Prioritize restoring service availability over pinpointing root cause.
+
+Communicate Effectively: Provide regular updates (e.g., every 15-30 minutes) to stakeholders, including estimated timelines and impact assessment.
+Use clear, concise language: "We’ve identified a routing issue affecting 40% of user traffic; mitigation is in progress."
+Update status pages, customer comms, and internal teams.
+
+Root Cause Analysis (RCA) During or After: Once stabilized, start root cause investigation: logs, metrics, config diffs, recent changes.
+Preserve evidence (e.g., router logs, packet captures) for post-incident review.
+
+Post-Incident Actions: Document the incident thoroughly: timeline, impact, actions taken, root cause, lessons learned.
+Conduct a blameless postmortem with the team.
+Implement corrective actions: config changes, improved monitoring, automation, training.
+
+How do you prevent recurrence of similar network failures?
+Root Cause Analysis (RCA): Conduct a thorough post-incident review, focusing on the underlying cause, not just symptoms.
+Use logs, metrics, configs, and change history to identify what went wrong.
+Apply 5 Whys or Fault Tree Analysis to get to the root.
+
+Implement Corrective Actions: Fix the root issue: Update configurations, replace failing hardware, improve routing policies.
+Review and update runbooks with new mitigation steps.
+Enhance monitoring and alerting based on failure signals seen in the incident.
+
+Improve Testing and Validation: Introduce pre-deployment testing (e.g., dry-run configuration checks, simulation tools like Batfish or SuzieQ).
+Use staging environments to test changes under real-world conditions.
+Automate rollback and validation to quickly recover if similar failures happen.
+
+Strengthen Monitoring and Observability: Expand monitoring coverage for metrics that correlated with the incident (e.g., BGP session drops, packet loss, high CPU on routers).
+Add anomaly detection or smarter thresholding to catch early warning signs.
+Improve logging granularity where gaps were found.
+
+Enhance Resilience and Redundancy: Review and upgrade network architecture: redundant paths, failover mechanisms, load balancing policies.
+Reevaluate capacity planning to handle peak loads or failover conditions.
+Consider geographic redundancy or cloud failover if appropriate.
+
+Audit and Iterate: Regularly review configurations, failover tests, and response playbooks.
+Audit network changes and configurations to identify potential risks.
+Continuously improve by applying lessons from all incidents, not just the big ones.
+
+Why are you considering new opportunities?
+I feel that I’ve reached a plateau in terms of learning and advancement opportunities. I’m looking for a position where I can continue to grow, take on new challenges, and contribute in a more impactful way. I’m also looking for a role in the Bay Area to better align with my personal and professional priorities.
+
+Can you describe your experience with Python and Go? How have you used these languages in your previous roles?
+Current Role:
+I am part of the AWS Datacenter Network Deployment team, where I design and develop Orchestrator Workflows to enable zero-touch provisioning of network racks and end-to-end network go-live processes using Python. My responsibilities include high-level deployment process design for network fabrics, breaking them down into low-level automation sprint tasks, and implementing them using object-oriented programming principles.
+
+The automation tasks involve extensive use of data structures and algorithms, along with various data formatting and templating technologies such as XML, YAML, Jinja, and JSON. I also perform code reviews, contribute to improving the codebase, and follow a CI/CD development approach.
+
+Previous Role (Visa):
+Previously at Visa, I was part of the Network Reliability team, where I developed Python scripts to automate the self-healing of degraded network components. I also worked on collecting performance metrics via APIs from various monitoring tools and generating intelligent, actionable reports.
+
+What automation tools have you worked with, such as Salt or Ansible? Can you provide examples of how you have used them?
+
+Similar to Ansible, I work with several home-built toolsets and code repositories in AWS that serve comparable purposes. For example, we use YAML files to define data center device roles, such as the type of device or rack (e.g., Edge Rack, ToR, InterDC Rack). We also have a 'Fabric Builder' package that functions like Ansible Playbooks: it renders these YAML definitions into switch and router configurations.
+
+There's also a configuration management system that tracks different config states, such as released, deployed, and collected versions. All these tools and code repositories are self-service, so my role includes both improving the existing codebase (e.g., fixing bugs, adding new features) and using the toolset to add config and deploy new data center fabrics.
+
+Are you familiar with Prometheus and Grafana? How have you implemented these tools in your projects? Have you worked with other monitoring tools like the ELK stack? If so, how did you use them?
+
+I haven’t used Prometheus, Grafana, or ELK directly, but I have extensive experience with similar tools such as SolarWinds, Splunk, and Sumo Logic. While working in the Operations team at Visa, I used these platforms extensively for troubleshooting network issues by analyzing SNMP polls, traps, syslog, and telemetry data.
+
+Can you explain your experience with network operations, specifically with BGP and EVPN?
+I have over 12 years of experience working with BGP in data center and backbone networks. My expertise includes configuring BGP sessions for clients, troubleshooting BGP neighborship issues, and managing traffic through BGP attribute manipulation. I have also implemented route-maps using communities for effective traffic engineering.
+
+In addition, I have hands-on experience with VXLAN, including both static flooding and EVPN. This involves troubleshooting import/export of route targets (RTs), ensuring correct VLAN-to-VNI mappings, and resolving other control-plane and data-plane issues.
+
+How do you approach bandwidth and capacity planning for networks? What signals do you use to alert on network health?
+At AWS, I was part of the capacity planning team, where I created high-level plans for inter-datacenter networks over a two-year horizon. These plans were based on both organic and inorganic demand growth in a given region, using network topology modeling tools such as Cariden.
+
+Several key factors were considered during planning:
+Rack space, power, and cooling constraints at data centers — for instance, if these resources were unavailable, scaling within that facility was no longer viable, and an alternative plan had to be developed.
+
+Fiber availability and hardware lead times were also critical inputs.
+I incorporated failure scenarios such as building power outages, rack-level power failures, fiber cuts, and device failures. To account for these, I used a conservative approach, considering only 75% of the available capacity as effective, to ensure redundancy.
+
+I also factored in ECMP inefficiencies due to elephant flows that reduce usable bandwidth.
+From an operations perspective, our monitoring tools were configured to trigger alerts in the event of network congestion. Packet drops would indicate the need for QoS management and traffic engineering measures, even as we continued to scale the network.
+
+Are you comfortable receiving alerts and using them to improve systems? Can you provide an example of how you have done this in the past?
+Yes, I’d like to give a specific example. While working on the Network Reliability team at Visa, we encountered multiple situations where two endpoints were connected to a hub site using OSPF. However, traffic would only fail over to the alternate path in the event of a complete link failure. This behavior led to multiple disruptions during intermittent link flaps, as traffic wouldn’t fail over automatically and required manual intervention to increase the OSPF cost on the affected path.
+To address this, I implemented an orchestrator system: The endpoints were configured to send SNMP traps to a central server whenever OSPF flapped. If the server received more than five traps within two minutes, the orchestrator would automatically increase the OSPF cost of the flapping path using a Netmiko connection to the device, triggering a failover.
+
+How do you balance your interest in network engineering with development tasks?
+I see both areas as complementary to each other. My background in network engineering gives me a strong understanding of infrastructure, protocols, and system reliability, while my automation skills allow me to automate, scale, and optimize those systems and deliver impactful results.
+
+I focus on understanding the root cause of network problems and identifying high level, scalable solutions. I like to think systematically looking beyond immediate fixes to see patterns and opportunities for optimization. Once I’ve defined the solution, I focus on codifying it through automation scripts, APIs, or internal tools so it can scale and have greater impact.
+
+Observalibilty:
+Current State of Automation:
+What's Automated:
+• Basic data collection and aggregation
+• Simple correlation of related events
+• Standard protocol analysis
+• Basic anomaly detection
+• Service discovery
+• Performance monitoring
+
+What Still Needs Human Input:
+• Business context definition
+• Complex correlation rules
+• False positive tuning
+• Root cause analysis of complex issues
+• Impact assessment of changes
+• Security policy definition
+• Compliance requirements
+
+Emerging Automation (using Al/ML):
+• Predictive analytics
+• Advanced anomaly detection
+• Automated root cause analysis
+• Self-healing networks
+• Intelligent alerting
+• Initial setup and configuration
+• Fine-tuning and optimization
+• Complex problem solving
+• Strategic decision making
+
+The key takeaway is that while tools have become increasingly sophisticated in automating many aspects of network observability, they still require human expertise for:
+• Business alignment
+Here's a comprehensive breakdown of achieving proactive operations through observability:
+1. Discards/Error on core + F5 TCP Connection drops
+2. Proactive scaling depending on traffic organic growth (no alert just observe)
+3. Routing path updates (T-Eyes topology view) -> Not necessarily causing any impact, may cause latency to application etc.
+4. Automated Response System - self heal of degraded component
+5. Capacity Planning Automation - RTP automation
+6. Change Impact Analysis (Device added to CR, Device role, previous failures, change plan pre-check/post/rollback)
+7. Dynamic Threshold:
+Benefits:
+- Fewer false alarms
+- Better anomaly detection
+- Adapts to growth
+- Handles seasonal patterns
+- More precise alerting
+Statistical:
+- Standard deviations from moving average
+- Percentile-based thresholds
+- Machine learning models
+Time Components:
+- Historical patterns
+- Seasonal decomposition
+- Trend analysis
+CPU Usage:
+- Business Hours: Higher threshold
+- Night: Lower threshold
+- Weekend: Different pattern altogether
+To successfully implement proactive operations:
+1. Start small and gradually expand
+2. Focus on high-impact areas first
+3. Validate automated decisions
+4. Maintain human oversight
+5. Regularly review and adjust
+6. Document everything
+7. Build team capabilities
+8. Measure and demonstrate value

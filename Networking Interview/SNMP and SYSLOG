@@ -1,0 +1,37 @@
+SNMP runs on the application layer and consists of a SNMP manager and a SNMP agent. The database that I just described is 
+called the MIB (Management Information Base) and an object could be the interface status on the router (up or down) or 
+perhaps the CPU load at a certain moment. An object in the MIB is called an OID (Object Identifier).
+
+The packet that we use to poll information is called a SNMP GET message and the packet that is used to write a configuration is a SNMP SET message.
+
+The NMS will send SNMP GET messages to request the current state of certain OIDs every few minutes or so. This is great for monitoring the temperature or traffic statistics but the downside of using these SNMP GET messages is that it might take a few minutes for the NMS to discover that an interface is down.
+
+Besides using SNMP GET messages, a SNMP agent can also send SNMP traps. A trap is a notification that it sent immediately as soon as something occurs, for example, an interface that goes down
+
+These SNMP trap messages sound like a good idea but there’s one problem with them…there is no acknowledgment for the SNMP trap, so you never know if the trap made it to the NMS or not. SNMP version 3 deals with this problem with an alternative message which uses an acknowledgment called the inform message.
+
+SNMP version 3 is a better choice nowadays because it supports username-based authentication instead of a community-string and also supports encryption. There are 3 different security modes:
+
+noAuthNoPriv: username authentication but no encryption.
+authNoPriv: MD5 or SHA authentication but no encryption.
+authPriv: MD5 or SHA authentication and encryption.
+
+Syslog:
+Let me break down how Cisco IOS formats log messages:
+
+timestamp: Feb 14 0:40:10.326
+facility: %LINEPROTO
+severity level: 5
+mnemonic: UPDOWN
+description: Line protocol on Interface GigabitEthernet0/1, changed state to up
+
+Let’s take a closer look at the severity levels. There are different severity levels for logging information. An interface that goes down is probably more important to know than a message that tells us we exited the global configuration. In total there are 8 severity levels:
+
+0. Emergency
+1. Alert
+2. Critical
+3. Error
+4. Warning
+5. Notice
+6. Informational
+7. Debug

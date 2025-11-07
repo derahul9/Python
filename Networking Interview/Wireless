@@ -1,0 +1,17 @@
+WEP encryption is unsafe. I won’t go into the details of it, but WEP uses a weak encryption algorithm (RC4) and uses static keys as part of the encryption process. WEP networks can be hacked in 5-10 minutes, no matter if you use a 64,128 or 256-bit key. So much for Wired Equivalent Privacy (the acronym WEP stands for).
+
+The next protocol in line is WPA (version 1). WPA uses the same encryption (RC4) as WEP, but a lot has changed to increase security. WEP uses static keys whereas WPA uses TKIP (Temporal Key Integrity Protocol) as the input for RC4. Simply said…dynamic keys instead of static keys that WEP has. Despite what you might read on the Internet, WPA is still secure, and nobody has “fully hacked” WPA, unlike WEP, which is completely wide open on the table.
+
+Since WEP and WPA both use RC4 encryption, all old hardware that only supported WEP can be upgraded to use WPA but not WPA 2. WPA 2 is completely redesigned. Instead of using the RC4 encryption algorithm, it works by using AES. AES is the most secure encryption algorithm up-to-date.
+
+So are WPA and WPA 2 safe from hackers? Yes and no. Nobody so far has managed to find a weakness in the protocols, so it’s safe, but it depends on the key you are using. There are two methods of using a key for WPA and WPA 2.
+
+Preshared key: This is what you probably use at home. You made up a key that’s being used for your wireless encryption.
+802.1x and EAP: This is what you use for serious wifi setups since you can authenticate users.
+
+The SOHO router is a switch, router, access point and (optionally) modem all in one device.
+The access point is called an autonomous access point since it does everything. Wireless authentication, forwarding traffic between the LAN / Wireless LAN, etc.
+Enterprise wireless LANs use a WLC (Wireless LAN Controller) and LWAPs (Light-Weight Access Point).
+Management tasks like creating wireless networks, authentication and roaming is all done in the WLC. The LWAPs are responsible of forwarding wireless traffic to and from the LAN.
+The WLC and LWAPs allow us to create a big, scalable wireless network.
+

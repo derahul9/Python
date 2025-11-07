@@ -1,0 +1,57 @@
+Characteristics of network traffic
+There are four characteristics of network traffic that we must deal with:
+
+Bandwidth
+Delay
+Jitter
+Loss
+Bandwidth is the speed of the link, in bits per second (bps). With QoS, we can tell the router how to use this bandwidth. With FIFO, packets are served on a first come first served basis. One of the things we can do with QoS is create different queues and put certain traffic types in different queues. We can then configure the router so that queue one gets 50% of the bandwidth, queue two gets 20% of the bandwidth and queue three gets the remaining 30% of the bandwidth.
+
+Delay is the time it takes for a packet to get from the source to a destination, this is called the one-way delay. The time it takes to get from a source to the destination and back is called the round-trip delay. There are different types of delay; without going into too much detail, let me give you a quick overview:
+
+Processing delay: this is the time it takes for a device to perform all tasks required to forward the packet. For example, a router must do a lookup in the routing table, check its ARP table, outgoing access-lists and more. Depending on the router model, CPU, and switching method this affects the processing delay.
+Queuing delay: the amount of time a packet is waiting in a queue. When an interface is congested, the packet will have to wait in the queue before it is transmitted.
+Serialization delay: the time it takes to send all bits of a frame to the physical interface for transmission.
+Propagation delay: the time it takes for bits to cross a physical medium. For example, the time it takes for bits to travel through a 10 mile fiber optic link is much lower than the time it takes for bits to travel using satellite links.
+Some of these delays, like the propagation delay, is something we can’t change. What we can do with QoS however, is influence the queuing delay. For example, you could create a priority queue that is always served before other queues. You could add voice packets to the priority queue so they don’t have to wait long in the queue, reducing the queuing delay.
+
+Jitter is the variation of one-way delay in a stream of packets. For example, let’s say an IP phone sends a steady stream of voice packets. Because of congestion in the network, some packets are delayed. The delay between packet 1 and 2 is 20 ms, the delay between packet 2 and 3 is 40 ms, the delay between packet 3 and 4 is 5 ms, etc. The receiver of these voice packets must deal with jitter, making sure the packets have a steady delay or you will experience poor voice quality.
+
+Loss is the amount of lost data, usually shown as a percentage of lost packets sent. If you send 100 packets and only 95 make it to the destination, you have 5% packet loss. Packet loss is always possible. For example, when there is congestion, packets will be queued but once the queue is full…packets will be dropped. With QoS, we can at least decide which packets get dropped when this happens.
+
+Traffic Types
+With QoS, we can change our network so that certain traffic is preferred over other traffic when it comes to bandwidth, delay, jitter and loss. What you need to configure however really depends on the applications that you use. Let’s take a closer look at different applications and traffic types.
+
+Batch Application
+Let’s start with a simple example, a user that wants to download a file from the Internet. Perhaps the latest IOS image:
+
+Let’s think about how important bandwidth, delay, jitter, and loss are when it comes to downloading a file like this.
+
+The file is 103.92 MB or 108967472  bytes. An IP packet is 1500 bytes by default, without the IP and TCP header there are 1460 bytes left for the TCP segment. It would take 108967472 / 1460 = ~74635 IP packets to transfer this file to your computer.
+
+Bandwidth is nice to have, it makes the difference between having to wait a few seconds, minutes or a few days to download a file like this.
+
+What about delay? There is a one-way delay to get the data from the server to your computer. When you click on the download link, it might take a short while before the download starts. Once the packets come in, it doesn’t really matter much what the delay is or the variation of delay (jitter) between the packets. You are not interacting with the download, just waiting for it to complete.
+
+What about packet loss? File transfers like these use TCP and when some packets are lost, TCP will retransmit your data, making sure the download makes it completely to your computer.
+
+An application like your web browser that downloads a file is a non-interactive application, often called a batch application or batch transfer. Bandwidth is nice to have since it reduces the time to wait for the download to complete. Delay, jitter and loss don’t matter much. With QoS, we can assign enough bandwidth to applications like these to ensure downloads complete in time and reducing packet loss to a minimum to prevent retransmissions.
+
+Interactive Application
+Another type of application is the interactive application. A good example is when you use telnet or SSH to access your router or switch:
+
+These applications don’t require a lot of bandwidth but they are somewhat sensitive to delay and packet loss. Since you are typing commands and waiting for a response, a high delay can be annoying to work with. If you ever had to access a router through a satellite link, you will know what I’m talking about. Satellite links can have a one-way delay of between 500-700ms which means that when you type a few characters, there will be a short pause before you see the characters appear on your console.
+
+With QoS, we can ensure that in case of congestion, interactive applications are served before bandwidth-hungry batch applications.
+
+Voice and Video Application
+Voice (and video) applications are the most “difficult” applications you can run on your network as it’s very sensitive to delay, jitter and packet loss. First, let me give you a quick overview of how VoIP works:
+
+QoS Tools
+We talked a bit about why we need QoS and different application types that have different requirements. Now let’s talk about the actual tools we can use to implement QoS:
+
+Classification and marking: if we want to give certain packets a different treatment, we have to identify and mark them.
+Queuing – Congestion Management: instead of having one big queue where packets are treated with FIFO, we can create multiple queues with different priorities.
+Shaping and Policing: these two tools are used to rate-limit your traffic.
+Congestion Avoidance: there are some tools we can use to manage packet loss and to reduce congestion.
+

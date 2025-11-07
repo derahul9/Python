@@ -1,0 +1,67 @@
+LACP is similar to PAgP but uses different terminology:
+
+Active: The interface will actively ask the other side to become an EtherChannel.
+Passive: The interface waits passively for the other side to ask to become an EtherChannel.
+
+SW1(config-if)#interface range GigabitEthernet 0/1 - 2
+SW1(config-if)#channel-group 1 mode active 
+
+SW2(config)#interface range GigabitEthernet 0/1 - 2
+SW2(config-if)#channel-group 1 mode passive
+
+SW1#show EtherChannel load-balance 
+EtherChannel Load-Balancing Configuration:
+        src-mac
+
+EtherChannel Load-Balancing Addresses Used Per-Protocol:
+Non-IP: Source MAC address
+  IPv4: Source MAC address
+  IPv6: Source MAC address
+
+Spanning Tree BPDU Filter
+The spanning tree BPDU filter works similarly to BPDU Guard as it allows you to block malicious BPDUs. The difference is that BPDUguard will put the interface that receives the BPDU on in err-disable mode while BPDU filter just “filters” it. In this lesson, we’ll take a good look at how the BPDU filter works.
+
+BPDU filter can be configured globally or on the interface level, and there’s a difference:
+
+Global: if you enable BPDU filter globally then any interface with portfast enabled will not send or receive any BPDUs. When you receive a BPDU on a portfast-enabled interface it will lose its portfast status, disables BPDU filtering, and acts as a normal interface.
+Interface: if you enable BPDU filter on the interface it will ignore incoming BPDUs, and it will not send any BPDUs. This is the equivalent of disabling spanning tree.
+
+Spanning Tree Root Guard
+Root Guard will make sure you don’t accept a certain switch as a root bridge. BPDUs are sent and processed normally but if a switch suddenly sends a BPDU with a superior bridge ID you won’t accept it as the root bridge. Normally SW2 would become the root bridge because it has the best bridge ID, fortunately we have Root Guard on SW3 so it’s not going to happen!
+
+Spanning Tree Loop Guard and UDLD
+If you ever used fiber cables you might have noticed that there is a different connector to transmit and receive traffic.
+
+Fiber Cable Connectors
+
+If one of the cables (transmit or receive) fails we’ll have a unidirectional link failure and this can cause spanning tree loops. Two protocols can take care of this problem:
+
+Loop Guard
+UDLD ( Unidirectional Link Detection )
+
+AAA stands for Authentication, Authorization, and Accounting:
+
+Authentication: Verify the identity of the user. Who are you?
+Authorization: What is the user allowed to do? what resources can he/she access?
+Accounting: Used for billing and auditing.
+
+802.1X is the mechanism that will block or unblock the interface. It’s called port-based control. In the picture above, an unknown user plugged in a cable to the switch.
+
+All traffic is being dropped with the exception of EAPoL (Extensible Authentication Protocol over LAN). EAP is what we use to exchange authentication information. Once the user has authenticated and everything is OK, she is granted access to the network.
+
+The user device is called the supplicant; it “supplies” authentication information. The switch is called the authenticator because it accepts the authentication information and passes it along to the authentication server. User information is stored on the authentication server.
+
+There are two types of authentication servers:
+
+RADIUS
+TACACS+
+The most common authentication server is RADIUS (Remote Authentication Dial In User Service). It’s a protocol that has been standardized by the IETF. TACACS+ (Terminal Access Controller Access-Control System) does a similar job, but it is Cisco proprietary.
+
+In the picture above, I have a DHCP server connected to the switch on the top left. At the bottom right, you see a legitimate client that would like to get an IP address. What if the l33t hacker script kiddy on the left would run DHCP server software on his computer? Who do you think will respond first to the DHCP discover message? The legitimate DHCP server or the script kiddy’s DHCP server software?
+
+On larger networks, you will probably find a central DHCP server somewhere in the server farm. If an attacker runs a DHCP server in the same subnet, he will likely respond faster to the DHCP discover message of the client. If this succeeds, he might assign the client with the attacker’s IP address as the default gateway for a man-in-the-middle attack. Another option would be to send the attacker’s IP address as the DNS server so you can spoof websites, etc.
+
+The attacker could also send DHCP discover messages to the DHCP server and try to deplete its DHCP pool. So what can we do to stop this madness? DHCP snooping to the rescue! We can configure our switches so they track the DHCP discover and DHCP offer messages. Here’s how:
+
+Interfaces that connect to clients should never be allowed to send a DHCP offer message. We can enforce this by making them untrusted. An untrusted interface will block DHCP offer messages. Only an interface configured as trusted is allowed to forward DHCP offer messages. We can also rate-limit interfaces so they can’t send an unlimited amount of DHCP discover messages. This will prevent attacks from depleting the DHCP pool.
+

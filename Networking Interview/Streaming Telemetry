@@ -1,0 +1,7 @@
+                    Streaming elemetry      Syslog                          SNMP Traps                      Polling
+Feature	            Streaming Telemetry	    Syslog	                        SNMP Traps	                    SNMP Polling
+Data Delivery Model	Push (real-time stream)	Push (event-driven text logs)	Push (event-driven messages)	Pull (polling intervals)
+                    Real time+structured data   Event Driven+Unstructured   Event Driven+ limited structured Periodic structured
+                    High data granulity
+
+Telemetry is scalable—you can stream only what you need, using efficient protocols like gRPC or Kafka, with secure and compressed payloads.

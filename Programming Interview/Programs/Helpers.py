@@ -654,6 +654,40 @@ Space Complexity: O(1)
 '''
 
 '''
+Ping/TraceRoute
+Echo Request (Type 8)
+Echo Reply (Type 0)
+Destination Unreachable (Type 3)
+Time Exceeded (Type 11) - Traceroute Destination response
+
+Limitations:
+Some routers don't send ICMP messages
+Load balancing can show inconsistent paths
+Firewalls may block traceroute packets
+
+Variations:
+Windows uses ICMP Echo by default
+Unix/Linux traditionally use UDP
+Some tools use TCP SYN for better firewall penetration
+
+MLAG: LAG but 2 different uplink switches
+Uses Anycast Gateway, so both L3 switches can route traffic (VRRP : Primary/Backup)
+Peer link is used for health traffic, broadcast/multicast traffic to learn Mac, when direct uplink fails, asymmetric routing: Routing protocol changes, load balancing scenarios
+
+MSS/MTT
+MSS (Maximum Segment Size): This is the maximum amount of data (payload) that can be sent in a single TCP segment. 
+It does not include the TCP header or other protocol headers, just the data portion, Negotiated in 3 way hand shake (1460 B)
+
+The MSS is determined during the TCP connection setup (the 3-way handshake) and is based on the maximum transmission unit (MTU) of the underlying network (In this case, 
+Sender/Receiver NIC) minus the size of the TCP and IP headers. For example, if the MTU is 1500 bytes, and the typical IP and TCP header sizes are 40 bytes (20 Bytes each), 
+the MSS might be set to 1460 bytes.
+
+Path MTU Discovery (PMTUD) is a mechanism that operates beyond the handshake and helps determine the actual MTU size along the entire path from the sender to the receiver.
+PMTUD works by sending packets with the Don't Fragment (DF) flag set in the IP header. If a packet is too large for a router along the path to forward without fragmentation, that router will drop the packet and send an ICMP "Fragmentation Needed" message back to the sender.
+Upon receiving the ICMP message, the sender reduces the packet size and retransmits it. This process helps the sender discover the smallest MTU along the path to the destination.
+'''
+
+'''
 Regex
 # \D - opposite of \d, matches anyhting other than digits
 # \W - Matches everything but not letters, numbers or _ character. It matches space
@@ -673,9 +707,30 @@ b = re.search(r"(.+?) +(\d) +(.+?)\s{2,} (\w)*", arp)
 print (b.group(1))
 c = re.search(r"\d\d+\.\d{2}\.[0-9][0-9]\.[0-9]{1,3}", arp)   #Search method returns only the first match
 print (c.group())
-'''
 
-'''
-17th Feb - 16th March (4 Weeks) - Networking(1/2) + MPLS/Behavioral/Resume(3) + Amazon&Visa Network/Tools/Code/Projects/Planning/Sys Design(4)
-17th March - Apply+Interview
+sorted_dict = dict(sorted(x.items(), key=lambda item: item[1]))
+
+# Combination - Order doesn't matter (so number of comb will be less)
+# Permutation - Order matters (So each arrangement considering all the possible order will make up permutation and hence more in number)
+
+from itertools import combinations
+sample_list = [1, 2, 3]
+comb = combinations(sample_list, 2)
+
+>>>ipaddress.ip_address('192.168.0.1')
+IPv4Address('192.168.0.1')
+>>> ipaddress.ip_address('2001:db8::')
+IPv6Address('2001:db8::')
+
+a = [1, 2, 3]
+a.remove(2)
+a               # [1, 3]
+
+a = [1, 2, 3]
+del a[1]
+a               # [1, 3]
+
+a = [1, 2, 3]
+a.pop(1)        # 2
+a               # [1, 3]
 '''

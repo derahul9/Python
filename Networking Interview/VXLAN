@@ -1,0 +1,197 @@
+Interfaces:
+Each VTEP has two interfaces types:
+* VTEP IP interface: Connects the VTEP to the underlay network with a unique IP address. This interface encapsulates and de-encapsulates Ethernet frames.
+* VNI interface: A virtual interface that keeps network traffic separated on the physical interface. Similar to an SVI interface.
+
+VXLAN Packet:
+The official UDP port number for VXLAN is 4789.
+VXLAN SIP | VXLAN DIP | VXLAN SPORT | VXLAN DPORT | VXLAN Header: VNI | Original Mac Header | Original IP Header | Data
+
+VXLAN Static Ingress Replication >>>>>> Data Plane Learning
+LEAF2#(config)# feature vn-segment-vlan-based
+LEAF2(config)# vlan 10
+LEAF2(config-vlan)# vn-segment 10010
+LEAF2(config)# interface Ethernet 1/2
+LEAF2(config-if)# switchport access vlan 10
+
+LEAF2(config)# feature nv overlay
+LEAF2(config)# interface nve 1
+LEAF2(config-if-nve)# no shutdown
+LEAF2(config-if-nve)# source-interface Loopback 0
+LEAF2(config-if-nve)# member vni 10010
+LEAF2(config-if-nve-vni)# ingress-replication protocol static 
+LEAF2(config-if-nve-vni-ingr-rep)# peer-ip 1.1.1.1
+
+VXLAN Flood & Learn Multicast Data Plane >>>> Data Plane Learning
+
+VXLAN MP-BGP EVPN L2 VNI >>>>> Control Plane Learning
+VXLAN MP-BGP EVPN separates the control plane (MP-BGP for MAC/IP advertisement) from the data plane (VXLAN encapsulation). We use MP-BGP to advertise MAC and IP address information between leaf switches. This eliminates the need for flood-and-learn mechanisms for unicast traffic and is a more efficient and scalable option.
+
+Despite MP-BGP EVPN’s advantages, we still need something for Broadcast, Unknown Unicast, and Multicast (BUM) traffic. You’ll need to configure static ingress replication or multicast for BUM traffic.
+
+SPINE1(config)# router bgp 123
+SPINE1(config-router)# neighbor 2.2.2.2
+SPINE1(config-router-neighbor)# remote-as 123
+SPINE1(config-router-neighbor)# update-source loopback 0
+SPINE1(config-router-neighbor)# address-family l2vpn evpn
+SPINE1(config-router-neighbor-af)# send-community 
+SPINE1(config-router-neighbor-af)# send-community extended
+SPINE1(config-router-neighbor-af)# route-reflector-client
+
+SPINE1(config-router)# neighbor 3.3.3.3
+SPINE1(config-router-neighbor)# remote-as 123
+SPINE1(config-router-neighbor)# update-source loopback 0
+SPINE1(config-router-neighbor)# address-family l2vpn evpn
+SPINE1(config-router-neighbor-af)# send-community 
+SPINE1(config-router-neighbor-af)# send-community extended 
+SPINE1(config-router-neighbor-af)# route-reflector-client
+
+This turns SPINE1 into a route reflector for the L2VPN EVPN address family. We also need extended communities enabled.
+
+We’ll configure the leaf switches as route reflector clients:
+
+LEAF1 & LEAF2
+(config)# router bgp 123 
+(config-router)# neighbor 1.1.1.1
+(config-router-neighbor)# remote-as 123
+(config-router-neighbor)# update-source loopback 0
+(config-router-neighbor)# address-family l2vpn evpn
+(config-router-neighbor-af)# send-community 
+(config-router-neighbor-af)# send-community extended
+
+(config)#feature vn-segment-vlan-based
+(config)#feature nv overlay
+
+(config)# vlan 10
+(config-vlan)# vn-segment 10010
+(config-vlan)# exit
+
+(config)# interface nve1
+(config-if-nve)# no shutdown
+(config-if-nve)# host-reachability protocol bgp
+(config-if-nve)# source-interface loopback 0
+(config-if-nve)# member vni 10010
+(config-if-nve-vni)# mcast-group 239.1.1.1
+
+This configuration is exactly the same as we have seen previously, with one exception. We now use the host-reachability protocol bgp command. This tells the leaf switches to learn MAC addresses in the control plane (using MP-BGP) and not on the data plane.
+
+LEAF1# show bgp l2vpn evpn neighbors 1.1.1.1 advertised-routes
+   Network            Next Hop            Metric     LocPrf     Weight Path
+Route Distinguisher: 2.2.2.2:32777    (L2VNI 10010)
+*>l[2]:[0]:[0]:[48]:[0050.c253.4001]:[0]:[0.0.0.0]/216
+
+This output requires some explanation. Let’s break it down:
+
+Route Distinguisher: 2.2.2.2:32777
+This is the generated RD to make this a unique route.
+The first part (2.2.2.2) is the router ID.
+The second part (32777) is the number 32767 + VLAN ID. We use VLAN 10, so that’s why you see 32777 here.
+*>l[2]:[0]:[0]:[48]:[0050.c253.4001]:[0]:[0.0.0.0]/216
+[2]: This is a BGP EVPN route type 2 MAC/IP advertisement route.
+[0]: Ethernet Segment Identifier (ESI). When there is a zero, it means we have a single homed site.
+[0]: Ethernet tag ID, which must be 0 for EVPN routes.
+[48]: The length of the MAC address in bits.
+[0050.c253.4001]: the learned MAC address of host S1.
+[0]: the length of the IP address in bits.
+[0.0.0.0]: the learned IP address.
+/216: the length of the MAC VRF NLRI in bits:
+RD: 8 bytes (64 bits)
+MAC address: 6 bytes (48 bits)
+L2VNI ID: 3 bytes (24 bits)
+ESI: 10 bytes (80 bits)
+
+LEAF1# show bgp l2vpn evpn 0050.c253.4001
+BGP routing table information for VRF default, address family L2VPN EVPN
+Route Distinguisher: 2.2.2.2:32777    (L2VNI 10010)
+BGP routing table entry for [2]:[0]:[0]:[48]:[0050.c253.4001]:[0]:[0.0.0.0]/216, version 3
+Paths: (1 available, best #1)
+Flags: (0x000102) (high32 00000000) on xmit-list, is not in l2rib/evpn
+
+  Advertised path-id 1
+  Path type: local, path is valid, is best path, no labeled nexthop
+  AS-Path: NONE, path locally originated
+    2.2.2.2 (metric 0) from 0.0.0.0 (2.2.2.2)
+      Origin IGP, MED not set, localpref 100, weight 32768
+      Received label 10010
+      Extcommunity: RT:123:10010 ENCAP:8
+
+  Path-id 1 advertised to peers:
+    1.1.1.1
+
+One item we didn’t see before is the RT. You can see it’s set to 123:10010. That’s the BGP AS number and VNI number.
+
+L3 VPN
+
+What if we have two hosts in different VLANs and subnets? Each VLAN will be mapped to a different VNI. Host S1 is in 172.16.10.0/24, and S2 is in 172.16.20.0/24. Because we use different subnets, we need to route this traffic. We call this inter-VNI traffic, and our VTEPs can do it. 
+
+Let me break down what we have here:
+
+We have two leaf switches (connected through a spine switch not shown here).
+The leaf switches perform bridging and routing. I visualized this by adding a router and switch icon.
+Leaf switches advertise the subnets they know about through MP-BGP EVPN:
+172.16.10.0/24 on LEAF1.
+172.16.20.0/24 on LEAF2.
+We have two hosts:
+S1 connected to LEAF1:
+VLAN 10
+VNI 10010
+172.16.10.1/24
+S2 connected to LEAF2:
+VLAN 20
+VNI 10020
+172.16.20.2/24
+The hosts use the IP address on the corresponding SVI interface of the LEAF switches:
+S1 uses 172.16.10.254/24 for VLAN 10.
+S2 uses 172.16.20.254/24 for VLAN 20.
+This allows the hosts to get outside of their subnet.
+The hosts can reach the default gateways of the leaf switches, but how do we get from LEAF1 to LEAF2 across the VXLAN fabric? To accomplish this, we create a new VLAN and VNI that is the same on both leaf switches and can be used for inter-VNI routing. We’ll use VLAN 1020 and VNI 101020 for this. This is for transit traffic between the two leaf switches.
+
+>>> This is like a shared virtual routed interface connected directly to both routers
+
+Let me break this down step-by-step:
+
+S1 sends a packet destined for S2, and LEAF1 bridges this packet in VLAN 10 using L2 VNI 10010.
+The packet ends up at the default gateway in VLAN 10 (172.16.10.254).
+LEAF1 does a routing lookup for 172.16.20.0/24 and uses the VLAN 1020 SVI interface for routing.
+LEAF1 encapsulates the packet with VXLAN and transmits it using the NVE interface.
+
+ARP Suppression:
+ARP suppression is a feature for MP-BGP EVPN that reduces ARP flooding on VXLAN networks. Flooding impacts network performance, so it should be kept to a minimum.
+
+IPv4 uses ARP to map an IP address to a MAC address. When a host wants to talk to another host on the same subnet, it sends an ARP request to figure out the remote host’s MAC address. An ARP request is broadcast traffic, so it falls in the category of broadcast, unknown-unicast, and multicast traffic (BUM traffic).
+
+When using VXLAN, the hosts have no clue as to what network they are connected to. ARP requests are treated as multi-destination traffic and flooded to all VTEPs within the L2 VNI. This is achieved using static ingress replication or with a multicast underlay. The ARP reply is a unicast packet. Here is a visualization of ARP on a VXLAN network:
+
+This flooding behavior is inefficient and should be reduced to a minimum.
+
+So, how does ARP suppression work? There are two pieces to understand:
+
+Creating and maintaining the ARP suppression cache table
+Dealing with ARP requests from hosts
+Let’s take a closer look at both.
+
+ARP Suppression Cache Table
+Once you enable ARP suppression, each VTEP will create and maintain an ARP suppression cache table. In this table, they store the IP-MAC bindings of the different hosts in a VNI.
+
+There are two ways to add MAC and IP bindings to the cache table:
+
+Local
+Remote
+Let’s take a closer look at both options.
+
+Local
+VTEPs learn from the ARP requests from downstream hosts.
+
+Many hosts are “chatty” and generate some traffic when they connect to the network. They might send a Gratuitous Address Resolution Protocol (GARP) or Reverse ARP (RARP) when they connect to the network. Otherwise, they might immediately send an ARP request for their default gateway, usually the VTEP.
+
+When a host immediately generates traffic, the VTEP can quickly learn the host’s MAC and IP address and add them to the ARP suppression cache table.
+
+There are exceptions, though. Some hosts might not generate any traffic until someone looks for them. We call these silent hosts. The only way to discover their MAC and IP address is that some host sends an ARP request for them. When the silent host replies with an ARP reply, we can learn their MAC and IP address. Examples of silent hosts can be printers or security devices. They can be connected for hours or days without initiating any traffic.
+
+*****Remote
+The second option for learning MAC and IP bindings and installing them in the cache table is to learn them from remote VTEPs. When a VTEP learns about a host’s MAC and IP address, it installs it in the cache table but also creates an MP-BGP EVPN type 2 route, which is advertised to other VTEPs.
+
+Respond to ARP Requests
+Now that you know how the VTEPs fill the cache table, the second part is understanding how they deal with ARP requests from hosts.
+
+
